@@ -1,0 +1,52 @@
+接下来的设置步骤
+✅ 很好！.gitignore已经创建成功
+现在我们继续完善项目设置：
+📝 第一步：编辑.gitignore内容
+打开.gitignore文件，把以下内容复制进去：
+gitignore
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio files
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+
+# Entity Framework
+Migrations/
+
+# User-specific files
+*.rsuser
+
+# Connection strings
+appsettings.json
+appsettings.Development.json
+appsettings.Production.json
+
+# Logs
+logs/
+*.log
+
+# Package files
+packages/
+node_modules/
+
+# JetBrains Rider
+.idea/
+
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
