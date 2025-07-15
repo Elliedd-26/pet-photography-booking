@@ -2,7 +2,7 @@
 
 ## Team Assignment
 - **Elliedd-26**: Owner, Pet, Notification features
-- **Teammate Name**: Photographer, Booking, Service features
+- **Alyssaak09**: Photographer, Booking, Service features
 
 ## Project Description
 A pet photography booking management system that allows pet owners to book professional photographers for their pets.
