@@ -1,4 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PetPhotographyApp.Data;
+using PetPhotographyApp.Models;
 
 namespace PetPhotographyApp.Controllers;
 

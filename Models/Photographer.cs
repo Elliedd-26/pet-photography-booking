@@ -2,10 +2,10 @@
 
 namespace PetPhotographyApp.Models
 {
-    public class Owner
+    public class Photographer
     {
         [Key]
-        public int OwnerId { get; set; }
+        public int PhotographerId { get; set; }
 
         public string Name { get; set; } = string.Empty;
 
@@ -15,12 +15,10 @@ namespace PetPhotographyApp.Models
         [Phone]
         public string? PhoneNumber { get; set; }
 
-        public string? Address { get; set; }
+        public string? Specialty { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public bool IsAvailable { get; set; } = true;
 
-        public ICollection<Pet> Pets { get; set; } = new List<Pet>();
         public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
-        public ICollection<Notification> Notifications { get; set; } = new List<Notification>();
     }
 }

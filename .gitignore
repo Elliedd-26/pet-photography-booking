@@ -1,8 +1,3 @@
-接下来的设置步骤
-✅ 很好！.gitignore已经创建成功
-现在我们继续完善项目设置：
-📝 第一步：编辑.gitignore内容
-打开.gitignore文件，把以下内容复制进去：
 gitignore
 # Build results
 [Dd]ebug/
