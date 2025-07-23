@@ -10,12 +10,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 var app = builder.Build();
 
-// 🌱 ADD THIS SECTION - Seed the database
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    SeedData.Initialize(context);
-}
+//seeds data here
 
 // Rest of your configuration stays the same
 if (!app.Environment.IsDevelopment())
