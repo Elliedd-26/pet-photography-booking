@@ -17,9 +17,7 @@ namespace PetPhotographyApp.Controllers
         // GET: OwnerPage
         public async Task<IActionResult> Index()
         {
-            var owners = await _context.Owners
-                .Include(o => o.Pets)
-                .ToListAsync();
+            var owners = await _context.Owners.ToListAsync();
             return View(owners);
         }
 
@@ -31,8 +29,8 @@ namespace PetPhotographyApp.Controllers
             var owner = await _context.Owners
                 .Include(o => o.Pets)
                 .Include(o => o.Bookings)
-                    .ThenInclude(b => b.Photographer)
-                .FirstOrDefaultAsync(o => o.OwnerId == id);
+                .Include(o => o.Notifications)
+                .FirstOrDefaultAsync(m => m.OwnerId == id);
 
             if (owner == null) return NotFound();
 
@@ -48,7 +46,7 @@ namespace PetPhotographyApp.Controllers
         // POST: OwnerPage/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("OwnerId,Name,Email,PhoneNumber")] Owner owner)
+        public async Task<IActionResult> Create([Bind("OwnerId,Name,Email,PhoneNumber,Address")] Owner owner)
         {
             if (ModelState.IsValid)
             {
@@ -73,7 +71,7 @@ namespace PetPhotographyApp.Controllers
         // POST: OwnerPage/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("OwnerId,Name,Email,PhoneNumberNumber")] Owner owner)
+        public async Task<IActionResult> Edit(int id, [Bind("OwnerId,Name,Email,PhoneNumber,Address")] Owner owner)
         {
             if (id != owner.OwnerId) return NotFound();
 
@@ -100,9 +98,7 @@ namespace PetPhotographyApp.Controllers
             if (id == null) return NotFound();
 
             var owner = await _context.Owners
-                .Include(o => o.Pets)
-                .FirstOrDefaultAsync(o => o.OwnerId == id);
-
+                .FirstOrDefaultAsync(m => m.OwnerId == id);
             if (owner == null) return NotFound();
 
             return View(owner);
