@@ -6,7 +6,9 @@ using PetPhotographyApp.Models;
 
 namespace PetPhotographyApp.Controllers
 {
-    public class OwnersController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class OwnersController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
@@ -15,61 +17,86 @@ namespace PetPhotographyApp.Controllers
             _context = context;
         }
 
-        // View page — return ViewModel (DTO)
-        public async Task<IActionResult> Index()
+        // GET: api/owners
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Owner>>> GetOwners()
         {
-            var owners = await _context.Owners
+            return await _context.Owners
                 .Include(o => o.Pets)
                 .ToListAsync();
-
-            var ownerDTOs = owners.Select(o => new OwnerDTO
-            {
-                OwnerId = o.OwnerId,
-                Name = o.Name,
-                Email = o.Email ?? "",
-                PhoneNumber = o.PhoneNumber ?? "",
-                Pets = o.Pets.Select(p => new PetDTO
-                {
-                    PetId = p.PetId,
-                    Name = p.Name,
-                    Species = p.Species ?? "",
-                    Breed = p.Breed,
-                    Age = p.Age ?? 0,
-                    Description = p.Description,
-                    OwnerName = o.Name
-                }).ToList()
-            }).ToList();
-
-            return View(ownerDTOs); // 你需要在 View 中对应用 OwnerDTO 类型
         }
 
-        // JSON API — optional, if you want JSON data
-        [HttpGet("api/owners")]
-        public async Task<IActionResult> GetAllOwners()
+        // GET: api/owners/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Owner>> GetOwner(int id)
         {
-            var owners = await _context.Owners
+            var owner = await _context.Owners
                 .Include(o => o.Pets)
-                .ToListAsync();
+                .FirstOrDefaultAsync(o => o.OwnerId == id);
 
-            var ownerDTOs = owners.Select(o => new OwnerDTO
+            if (owner == null)
+                return NotFound();
+
+            return owner;
+        }
+
+        // POST: api/owners
+        [HttpPost]
+        public async Task<ActionResult<Owner>> CreateOwner(Owner owner)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            _context.Owners.Add(owner);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetOwner), new { id = owner.OwnerId }, owner);
+        }
+
+        // PUT: api/owners/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateOwner(int id, Owner owner)
+        {
+            if (id != owner.OwnerId)
+                return BadRequest("Owner ID mismatch.");
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            _context.Entry(owner).State = EntityState.Modified;
+
+            try
             {
-                OwnerId = o.OwnerId,
-                Name = o.Name,
-                Email = o.Email ?? "",
-                PhoneNumber = o.PhoneNumber ?? "",
-                Pets = o.Pets.Select(p => new PetDTO
-                {
-                    PetId = p.PetId,
-                    Name = p.Name,
-                    Species = p.Species ?? "",
-                    Breed = p.Breed,
-                    Age = p.Age ?? 0,
-                    Description = p.Description,
-                    OwnerName = o.Name
-                }).ToList()
-            });
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!OwnerExists(id))
+                    return NotFound();
+                else
+                    throw;
+            }
 
-            return Ok(ownerDTOs);
+            return NoContent();
+        }
+
+        // DELETE: api/owners/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteOwner(int id)
+        {
+            var owner = await _context.Owners.FindAsync(id);
+            if (owner == null)
+                return NotFound();
+
+            _context.Owners.Remove(owner);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private bool OwnerExists(int id)
+        {
+            return _context.Owners.Any(e => e.OwnerId == id);
         }
     }
 }

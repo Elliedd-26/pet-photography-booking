@@ -7,11 +7,13 @@ namespace PetPhotographyApp.Models
         [Key]
         public int OwnerId { get; set; }
 
-        public string Name { get; set; } = string.Empty;
+       [Required(ErrorMessage = "Name is required")]
+        public string Name { get; set; } = string.Empty;    
 
         [EmailAddress]
         public string? Email { get; set; }
 
+        [StringLength(15, ErrorMessage = "Phone number cannot exceed 15 digits")]
         [Phone]
         public string? PhoneNumber { get; set; }
 
