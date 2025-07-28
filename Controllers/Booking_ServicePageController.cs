@@ -16,6 +16,8 @@ namespace PetPhotographyApp.Controllers
             _context = context;
         }
 
+        // GET: Booking_ServicePage
+        // Displays a list of all booking-service associations with related booking and service data.
         public async Task<IActionResult> Index()
         {
             var list = await _context.Booking_Services
@@ -26,6 +28,8 @@ namespace PetPhotographyApp.Controllers
             return View(list);
         }
 
+        // GET: Booking_ServicePage/Create
+        // Displays a form to create a new booking-service association.
         public IActionResult Create()
         {
             var viewModel = new BookingServiceViewModel
@@ -45,6 +49,8 @@ namespace PetPhotographyApp.Controllers
             return View(viewModel);
         }
 
+        // POST: Booking_ServicePage/Create
+        // Handles the form submission to create a new booking-service association.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BookingServiceViewModel viewModel)
@@ -62,6 +68,7 @@ namespace PetPhotographyApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+             // Repopulate dropdowns if model state is invalid
             viewModel.Bookings = _context.Bookings.Select(b => new SelectListItem
             {
                 Value = b.BookingId.ToString(),
@@ -76,6 +83,8 @@ namespace PetPhotographyApp.Controllers
             return View(viewModel);
         }
 
+        // GET: Booking_ServicePage/Delete
+        // Displays a confirmation view for deleting a specific booking-service association.
         public async Task<IActionResult> Delete(int? bookingId, int? serviceId)
         {
             if (bookingId == null || serviceId == null)
@@ -91,6 +100,8 @@ namespace PetPhotographyApp.Controllers
             return View(entity);
         }
 
+        // POST: Booking_ServicePage/DeleteConfirmed
+        // Executes deletion of the selected booking-service association after confirmation.
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int bookingId, int serviceId)

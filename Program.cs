@@ -26,7 +26,7 @@ var app = builder.Build();
 // Rest of your configuration stays the same
 if (app.Environment.IsDevelopment())
 {
-    Console.WriteLine("✅ Swagger is ON!");
+    Console.WriteLine("Swagger is ON!");
     app.UseSwagger();
     app.UseSwaggerUI();
     //app.UseExceptionHandler("/Home/Error");
