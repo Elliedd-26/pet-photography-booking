@@ -3,12 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace PetPhotographyApp.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialClean : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -176,48 +174,6 @@ namespace PetPhotographyApp.Migrations
                         principalColumn: "ServiceId",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.InsertData(
-                table: "Owners",
-                columns: new[] { "OwnerId", "Address", "CreatedAt", "Email", "Name", "PhoneNumber" },
-                values: new object[,]
-                {
-                    { 1, null, new DateTime(2025, 7, 22, 17, 45, 56, 767, DateTimeKind.Local).AddTicks(9350), "alice@example.com", "Alice", "1234567890" },
-                    { 2, null, new DateTime(2025, 7, 22, 17, 45, 56, 774, DateTimeKind.Local).AddTicks(8100), "bob@example.com", "Bob", "2345678901" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Photographers",
-                columns: new[] { "PhotographerId", "Email", "IsAvailable", "Name", "PhoneNumber", "Specialty" },
-                values: new object[] { 1, "sophie@photo.com", true, "Sophie", "8888888888", "Pets" });
-
-            migrationBuilder.InsertData(
-                table: "Services",
-                columns: new[] { "ServiceId", "CreatedDate", "Description", "IsActive", "LastModified", "Name", "Price" },
-                values: new object[,]
-                {
-                    { 1, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Simple headshot of your pet", true, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Basic Pet Portrait", 49.99m },
-                    { 2, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Photos in a park", true, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Outdoor Session", 79.99m }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Pets",
-                columns: new[] { "PetId", "Age", "Breed", "Color", "CreatedAt", "Description", "Name", "OwnerId", "SpecialNotes", "Species" },
-                values: new object[,]
-                {
-                    { 1, 3, "Poodle", null, new DateTime(2025, 7, 22, 17, 45, 56, 775, DateTimeKind.Local).AddTicks(2080), null, "Fluffy", 1, null, "Dog" },
-                    { 2, 2, "Siamese", null, new DateTime(2025, 7, 22, 17, 45, 56, 775, DateTimeKind.Local).AddTicks(2900), null, "Mittens", 2, null, "Cat" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Bookings",
-                columns: new[] { "BookingId", "BookingDate", "Location", "Notes", "OwnerId", "PetId", "PhotographerId", "Status" },
-                values: new object[] { 1, new DateTime(2025, 7, 25, 17, 45, 56, 775, DateTimeKind.Local).AddTicks(5290), "Toronto Studio", "Fluffy is a bit shy", 1, 1, 1, "Pending" });
-
-            migrationBuilder.InsertData(
-                table: "Booking_Services",
-                columns: new[] { "BookingId", "ServiceId", "Status" },
-                values: new object[] { 1, 1, "Pending" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Booking_Services_ServiceId",

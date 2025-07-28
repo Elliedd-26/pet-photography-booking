@@ -11,8 +11,8 @@ using PetPhotographyApp.Data;
 namespace PetPhotographyApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250722214557_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250728182403_SaveCurrentData")]
+    partial class SaveCurrentData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,19 +58,6 @@ namespace PetPhotographyApp.Migrations
                     b.HasIndex("PhotographerId");
 
                     b.ToTable("Bookings");
-
-                    b.HasData(
-                        new
-                        {
-                            BookingId = 1,
-                            BookingDate = new DateTime(2025, 7, 25, 17, 45, 56, 775, DateTimeKind.Local).AddTicks(5290),
-                            Location = "Toronto Studio",
-                            Notes = "Fluffy is a bit shy",
-                            OwnerId = 1,
-                            PetId = 1,
-                            PhotographerId = 1,
-                            Status = "Pending"
-                        });
                 });
 
             modelBuilder.Entity("PetPhotographyApp.Models.Booking_Service", b =>
@@ -90,14 +77,6 @@ namespace PetPhotographyApp.Migrations
                     b.HasIndex("ServiceId");
 
                     b.ToTable("Booking_Services");
-
-                    b.HasData(
-                        new
-                        {
-                            BookingId = 1,
-                            ServiceId = 1,
-                            Status = "Pending"
-                        });
                 });
 
             modelBuilder.Entity("PetPhotographyApp.Models.Notification", b =>
@@ -165,24 +144,6 @@ namespace PetPhotographyApp.Migrations
                         .IsUnique();
 
                     b.ToTable("Owners");
-
-                    b.HasData(
-                        new
-                        {
-                            OwnerId = 1,
-                            CreatedAt = new DateTime(2025, 7, 22, 17, 45, 56, 767, DateTimeKind.Local).AddTicks(9350),
-                            Email = "alice@example.com",
-                            Name = "Alice",
-                            PhoneNumber = "1234567890"
-                        },
-                        new
-                        {
-                            OwnerId = 2,
-                            CreatedAt = new DateTime(2025, 7, 22, 17, 45, 56, 774, DateTimeKind.Local).AddTicks(8100),
-                            Email = "bob@example.com",
-                            Name = "Bob",
-                            PhoneNumber = "2345678901"
-                        });
                 });
 
             modelBuilder.Entity("PetPhotographyApp.Models.Pet", b =>
@@ -229,28 +190,6 @@ namespace PetPhotographyApp.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("Pets");
-
-                    b.HasData(
-                        new
-                        {
-                            PetId = 1,
-                            Age = 3,
-                            Breed = "Poodle",
-                            CreatedAt = new DateTime(2025, 7, 22, 17, 45, 56, 775, DateTimeKind.Local).AddTicks(2080),
-                            Name = "Fluffy",
-                            OwnerId = 1,
-                            Species = "Dog"
-                        },
-                        new
-                        {
-                            PetId = 2,
-                            Age = 2,
-                            Breed = "Siamese",
-                            CreatedAt = new DateTime(2025, 7, 22, 17, 45, 56, 775, DateTimeKind.Local).AddTicks(2900),
-                            Name = "Mittens",
-                            OwnerId = 2,
-                            Species = "Cat"
-                        });
                 });
 
             modelBuilder.Entity("PetPhotographyApp.Models.Photographer", b =>
@@ -281,17 +220,6 @@ namespace PetPhotographyApp.Migrations
                     b.HasKey("PhotographerId");
 
                     b.ToTable("Photographers");
-
-                    b.HasData(
-                        new
-                        {
-                            PhotographerId = 1,
-                            Email = "sophie@photo.com",
-                            IsAvailable = true,
-                            Name = "Sophie",
-                            PhoneNumber = "8888888888",
-                            Specialty = "Pets"
-                        });
                 });
 
             modelBuilder.Entity("PetPhotographyApp.Models.Service", b =>
@@ -324,28 +252,6 @@ namespace PetPhotographyApp.Migrations
                     b.HasKey("ServiceId");
 
                     b.ToTable("Services");
-
-                    b.HasData(
-                        new
-                        {
-                            ServiceId = 1,
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Simple headshot of your pet",
-                            IsActive = true,
-                            LastModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Basic Pet Portrait",
-                            Price = 49.99m
-                        },
-                        new
-                        {
-                            ServiceId = 2,
-                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Photos in a park",
-                            IsActive = true,
-                            LastModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Outdoor Session",
-                            Price = 79.99m
-                        });
                 });
 
             modelBuilder.Entity("PetPhotographyApp.Models.Booking", b =>

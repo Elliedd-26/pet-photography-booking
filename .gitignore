@@ -19,7 +19,7 @@ bld/
 *.suo
 
 # Entity Framework
-Migrations/
+#Migrations/
 
 # User-specific files
 *.rsuser

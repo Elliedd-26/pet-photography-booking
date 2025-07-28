@@ -9,7 +9,7 @@ public class HomeController : Controller
 {
     public IActionResult Index()
     {
-        return View();
+        return Content("Hello! API is running.");
     }
 
     public IActionResult Privacy()
