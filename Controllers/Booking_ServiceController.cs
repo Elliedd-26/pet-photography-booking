@@ -17,6 +17,8 @@ namespace PetPhotographyApp.Controllers
             _context = context;
         }
 
+        // GET: api/Booking_Service
+        // Returns a list of all booking-service relationships.
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BookingServiceDTO>>> GetAll()
         {
@@ -29,7 +31,9 @@ namespace PetPhotographyApp.Controllers
 
             return Ok(result);
         }
-
+        
+        // GET: api/Booking_Service/{bookingId}/{serviceId}
+        // Retrieves a specific booking-service relationship by composite key.
         [HttpGet("{bookingId}/{serviceId}")]
         public async Task<ActionResult<BookingServiceDTO>> Get(int bookingId, int serviceId)
         {
@@ -43,6 +47,8 @@ namespace PetPhotographyApp.Controllers
             };
         }
 
+        // POST: api/Booking_Service
+        // Creates a new booking-service relationship.
         [HttpPost]
         public async Task<ActionResult> Create(BookingServiceDTO dto)
         {
@@ -58,6 +64,8 @@ namespace PetPhotographyApp.Controllers
             return CreatedAtAction(nameof(Get), new { bookingId = dto.BookingId, serviceId = dto.ServiceId }, dto);
         }
 
+        // DELETE: api/Booking_Service/{bookingId}/{serviceId}
+        // Deletes an existing booking-service relationship.
         [HttpDelete("{bookingId}/{serviceId}")]
         public async Task<IActionResult> Delete(int bookingId, int serviceId)
         {
