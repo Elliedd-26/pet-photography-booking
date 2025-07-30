@@ -101,9 +101,9 @@ namespace PetPhotographyApp.Data
                 entity.HasKey(e => e.NotificationId);
                 entity.Property(e => e.Message).IsRequired().HasMaxLength(500);
                 entity.Property(e => e.Type).HasMaxLength(50);
-                entity.HasOne(n => n.Owner)
+                entity.HasOne(n => n.RecipientOwner)
                       .WithMany(o => o.Notifications)
-                      .HasForeignKey(n => n.OwnerId)
+                      .HasForeignKey(n => n.RecipientOwnerId)
                       .OnDelete(DeleteBehavior.Cascade);
             });
         

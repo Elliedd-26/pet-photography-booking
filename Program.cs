@@ -29,6 +29,8 @@ if (app.Environment.IsDevelopment())
     Console.WriteLine("Swagger is ON!");
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
+    
     //app.UseExceptionHandler("/Home/Error");
     //app.UseHsts();
 }

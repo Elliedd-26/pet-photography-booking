@@ -114,6 +114,7 @@ namespace PetPhotographyApp.Controllers
             // Prepare view model with all necessary data for booking creation
             var viewModel = new BookingFormViewModel
             {
+                BookingDate = DateTime.Today,
                 Owners = await _context.Owners                      // Fixed: Changed from Owners to Owners
                     .OrderBy(o => o.Name)
                     .ToListAsync(),
@@ -145,9 +146,19 @@ namespace PetPhotographyApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BookingFormViewModel model)
         {
+            Console.WriteLine("=== POST Create triggered ===");
             if (!ModelState.IsValid)
             {
+                Console.WriteLine("ModelState is invalid!");
                 // Repopulate dropdown data if validation fails
+                foreach (var key in ModelState.Keys)
+                {
+                     var state = ModelState[key];
+                    foreach (var error in state.Errors)
+                    {
+                        Console.WriteLine($"[Validation Error] {key}: {error.ErrorMessage}");
+                    }
+                }
                 await RepopulateFormData(model);
                 return View(model);
             }

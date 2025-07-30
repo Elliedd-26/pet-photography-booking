@@ -1,9 +1,11 @@
-﻿@model IEnumerable<Photography_Booking_System.Models.Photographer>
+﻿@model IEnumerable<PetPhotographyApp.Models.Photographer>
+
 @{
     ViewData["Title"] = "Photographers";
 }
 
-<h2>Photographers</h2>
+<h1>Photographers</h1>
+
 <p>
     <a asp-action="Create" class="btn btn-primary">Add New Photographer</a>
 </p>
@@ -12,22 +14,24 @@
     <thead>
         <tr>
             <th>Name</th>
-            <th>Specialty</th>
-            <th>Actions</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.Name</td>
-                <td>@item.Specialty</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.PhotographerId">Details</a> |
-                    <a asp-action="Edit" asp-route-id="@item.PhotographerId">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@item.PhotographerId">Delete</a>
-                </td>
-            </tr>
-        }
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>@item.Email</td>
+            <td>@item.PhoneNumber</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.PhotographerId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.PhotographerId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.PhotographerId">Delete</a>
+            </td>
+        </tr>
+    }
     </tbody>
 </table>

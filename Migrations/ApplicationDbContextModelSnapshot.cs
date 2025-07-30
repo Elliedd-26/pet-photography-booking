@@ -82,9 +82,6 @@ namespace PetPhotographyApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("TEXT");
-
                     b.Property<bool>("IsRead")
                         .HasColumnType("INTEGER");
 
@@ -93,8 +90,15 @@ namespace PetPhotographyApp.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("OwnerId")
+                    b.Property<int>("RecipientOwnerId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("SentAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -103,7 +107,7 @@ namespace PetPhotographyApp.Migrations
 
                     b.HasKey("NotificationId");
 
-                    b.HasIndex("OwnerId");
+                    b.HasIndex("RecipientOwnerId");
 
                     b.ToTable("Notifications");
                 });
@@ -299,13 +303,13 @@ namespace PetPhotographyApp.Migrations
 
             modelBuilder.Entity("PetPhotographyApp.Models.Notification", b =>
                 {
-                    b.HasOne("PetPhotographyApp.Models.Owner", "Owner")
+                    b.HasOne("PetPhotographyApp.Models.Owner", "RecipientOwner")
                         .WithMany("Notifications")
-                        .HasForeignKey("OwnerId")
+                        .HasForeignKey("RecipientOwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Owner");
+                    b.Navigation("RecipientOwner");
                 });
 
             modelBuilder.Entity("PetPhotographyApp.Models.Pet", b =>

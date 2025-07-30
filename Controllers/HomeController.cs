@@ -7,12 +7,8 @@ namespace PetPhotographyApp.Controllers;
 
 public class HomeController : Controller
 {
-    public IActionResult Index()
-    {
-        return Content("Hello! API is running.");
-    }
 
-    public IActionResult Privacy()
+    public IActionResult Index()
     {
         return View();
     }
