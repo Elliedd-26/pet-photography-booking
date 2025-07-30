@@ -61,18 +61,26 @@ namespace PetPhotographyApp.Controllers
         /// A Pet object if found; otherwise, 404 Not Found.
         /// </returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<Pet>> GetPet(int id)
+        public async Task<ActionResult<PetDTO>> GetPet(int id)
         {
             var pet = await _context.Pets
                 .Include(p => p.Owner)
                 .FirstOrDefaultAsync(p => p.PetId == id);
 
             if (pet == null)
-            {
                 return NotFound();
-            }
 
-            return pet;
+            var petDto = new PetDTO
+            {
+                PetId = pet.PetId,
+                Name = pet.Name,
+                Species = pet.Species,
+                Breed = pet.Breed,
+                Age = pet.Age,
+                OwnerName = pet.Owner?.Name ?? "Unknown"
+            };
+
+            return Ok(petDto);
         }
 
         /// <summary>

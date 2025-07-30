@@ -1,0 +1,42 @@
+<pre>@Html.Raw(Json.Serialize(Model))</pre>
+@model PetPhotographyApp.Models.Pet
+
+@{
+    ViewData["Title"] = "Edit Pet";
+}
+
+<h1>Edit Pet</h1>
+
+<form asp-action="Edit" method="post">
+    @Html.AntiForgeryToken()
+
+    <input type="hidden" asp-for="PetId" />
+    
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Species"></label>
+        <input asp-for="Species" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Breed"></label>
+        <input asp-for="Breed" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Age"></label>
+        <input asp-for="Age" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <label asp-for="OwnerId">Owner</label>
+        <select asp-for="OwnerId" class="form-control" asp-items="@(ViewBag.OwnerId)"></select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Back</a>
+</form>

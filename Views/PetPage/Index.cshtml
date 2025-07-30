@@ -1,0 +1,39 @@
+@model IEnumerable<PetPhotographyApp.Models.Pet>
+
+@{
+    ViewData["Title"] = "Pets";
+}
+
+<h1>Pets</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Add New Pet</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Species</th>
+            <th>Breed</th>
+            <th>Owner</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var pet in Model)
+    {
+        <tr>
+            <td>@pet.Name</td>
+            <td>@pet.Species</td>
+            <td>@pet.Breed</td>
+            <td>@pet.Owner.Name</td>
+            <td>
+                <a asp-action="Details" asp-route-id="@pet.PetId">Details</a> |
+                <a asp-action="Edit" asp-route-id="@pet.PetId">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@pet.PetId">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

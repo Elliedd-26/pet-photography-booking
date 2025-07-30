@@ -1,0 +1,30 @@
+@model PetPhotographyApp.Models.Notification
+
+@{
+    ViewData["Title"] = "Create Notification";
+}
+
+<h1>Create Notification</h1>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Title"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Message"></label>
+        <textarea asp-for="Message" class="form-control"></textarea>
+        <span asp-validation-for="Message" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="RecipientOwnerId">Send To</label>
+        <input asp-for="RecipientOwnerId" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Send</button>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

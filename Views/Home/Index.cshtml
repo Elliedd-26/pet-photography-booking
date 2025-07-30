@@ -1,21 +1,17 @@
 ﻿@{
-    ViewData["Title"] = "ThinkOutSide The Box";
+    ViewData["Title"] = "Welcome to PetLens";
 }
 
-<div class="text-center mt-5">
-    <h1 class="display-4">Welcome to ThinkOutSide The Box</h1>
-    <p class="lead">Your easy-to-use platform for booking professional photography sessions.</p>
-    <p>Whether it’s portraits, events, or commercial shoots, we connect you with the best photographers around.</p>
+<div class="text-center">
+    <h1 class="display-4">Welcome to PetLens!</h1>
+    <p class="lead">Capture beautiful memories with your furry friends.</p>
 
-    <div class="mt-4">
-        <a asp-controller="BookingPage" asp-action="Index" class="btn btn-primary btn-lg mx-2">Book a Session</a>
-        <a asp-controller="PhotographersPage" asp-action="Index" class="btn btn-outline-secondary btn-lg mx-2">Meet Our Photographers</a>
-        <a asp-controller="ServicesPage" asp-action="Index" class="btn btn-info btn-lg mx-2 text-white">Check Out Our Services</a>
+    <p>PetLens is a dedicated platform for booking professional pet photography sessions. Whether it's a playful puppy shoot or a heartfelt senior portrait, we help you create lasting memories.</p>
+
+    <hr />
+
+    <div class="d-flex justify-content-center gap-3">
+        <a class="btn btn-primary btn-lg" asp-controller="Bookings" asp-action="Create">Book a Session</a>
+        <a class="btn btn-outline-secondary btn-lg" asp-controller="Services" asp-action="Index">Explore Services</a>
     </div>
-
-    <hr class="my-5" />
-
-    <p>
-        Want to learn how this system works? Check out our <a href="https://learn.microsoft.com/aspnet/core" target="_blank" rel="noopener noreferrer">ASP.NET Core documentation</a>.
-    </p>
 </div>

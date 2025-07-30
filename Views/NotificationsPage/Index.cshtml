@@ -1,0 +1,39 @@
+@model IEnumerable<PetPhotographyApp.Models.Notification>
+
+@{
+    ViewData["Title"] = "Notifications";
+}
+
+<h1>Notifications</h1>
+
+<p>
+    <a asp-controller="NotificationsPage" asp-action="Create" class="btn btn-primary">New Notification</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Message</th>
+            <th>Recipient</th>
+            <th>Sent At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Title</td>
+            <td>@item.Message</td>
+            <td>@item.RecipientOwner?.Name</td>
+            <td>@item.SentAt.ToString("g")</td>
+            <td>
+                <a asp-controller="NotificationsPage" asp-action="Details" asp-route-id="@item.NotificationId">Details</a> |
+                <a asp-controller="NotificationsPage" asp-action="Edit" asp-route-id="@item.NotificationId">Edit</a> |
+                <a asp-controller="NotificationsPage" asp-action="Delete" asp-route-id="@item.NotificationId">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

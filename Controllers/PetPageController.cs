@@ -16,8 +16,6 @@ namespace PetPhotographyApp.Controllers
             _context = context;
         }
 
-        // GET: PetPage
-        // Returns a list of all pets with their owners.
         public async Task<IActionResult> Index()
         {
             var pets = await _context.Pets
@@ -26,8 +24,6 @@ namespace PetPhotographyApp.Controllers
             return View(pets);
         }
 
-        // GET: PetPage/Details/5
-        // Shows detailed info for a single pet.
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -37,23 +33,18 @@ namespace PetPhotographyApp.Controllers
                 .Include(p => p.Bookings)
                     .ThenInclude(b => b.Photographer)
                 .FirstOrDefaultAsync(p => p.PetId == id);
-            
+
             if (pet == null) return NotFound();
 
             return View(pet);
         }
 
-        // GET: PetPage/Create
-        // Displays the form to create a new pet.
         public async Task<IActionResult> Create()
         {
-            // Get list of owners for dropdown
             ViewData["OwnerId"] = new SelectList(await _context.Owners.ToListAsync(), "OwnerId", "Name");
             return View();
         }
 
-        // POST: PetPage/Create
-        // Handles form submission to create a new pet.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PetId,Name,Species,Breed,Age,Description,OwnerId")] Pet pet)
@@ -64,56 +55,71 @@ namespace PetPhotographyApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            
-            // Repopulate dropdown in case of validation error
+
             ViewData["OwnerId"] = new SelectList(await _context.Owners.ToListAsync(), "OwnerId", "Name", pet.OwnerId);
             return View(pet);
         }
 
-        // GET: PetPage/Edit/5
-        // Displays the form to edit an existing pet.
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
 
-            var pet = await _context.Pets.FindAsync(id);
+            var pet = await _context.Pets
+                .Include(p => p.Owner)
+                .FirstOrDefaultAsync(p => p.PetId == id);
             if (pet == null) return NotFound();
 
-            // Get list of owners for dropdown
             ViewData["OwnerId"] = new SelectList(await _context.Owners.ToListAsync(), "OwnerId", "Name", pet.OwnerId);
             return View(pet);
         }
 
-        // POST: PetPage/Edit/5
-        // Handles form submission to update an existing pet.
+        // ✅ POST: PetPage/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("PetId,Name,Species,Breed,Age,Description,OwnerId")] Pet pet)
         {
-            if (id != pet.PetId) return NotFound();
+            Console.WriteLine("🎯 Entered Edit POST method");
 
-            if (ModelState.IsValid)
+            if (id != pet.PetId)
             {
-                try
-                {
-                    _context.Update(pet);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PetExists(pet.PetId)) return NotFound();
-                    else throw;
-                }
-                return RedirectToAction(nameof(Index));
+                Console.WriteLine("❌ ID mismatch");
+                return NotFound();
             }
-            
-            // Repopulate dropdown in case of validation error
-            ViewData["OwnerId"] = new SelectList(await _context.Owners.ToListAsync(), "OwnerId", "Name", pet.OwnerId);
-            return View(pet);
+
+            if (!ModelState.IsValid)
+            {
+                Console.WriteLine("❌ ModelState Invalid");
+                foreach (var kvp in ModelState)
+                {
+                    foreach (var error in kvp.Value.Errors)
+                    {
+                        Console.WriteLine($" - {kvp.Key}: {error.ErrorMessage}");
+                    }
+                }
+
+                ViewData["OwnerId"] = new SelectList(await _context.Owners.ToListAsync(), "OwnerId", "Name", pet.OwnerId);
+                return View(pet);
+            }
+
+            try
+            {
+                _context.Update(pet);
+                await _context.SaveChangesAsync();
+                Console.WriteLine("✅ Pet updated successfully");
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PetExists(pet.PetId))
+                {
+                    Console.WriteLine("❌ Pet not found during update");
+                    return NotFound();
+                }
+                else throw;
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: PetPage/Delete/5
-        // Displays a confirmation view to delete a pet.
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -126,8 +132,6 @@ namespace PetPhotographyApp.Controllers
             return View(pet);
         }
 
-        // POST: PetPage/Delete/5
-        // Handles the deletion after confirmation.
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -141,17 +145,12 @@ namespace PetPhotographyApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: PetPage/ByOwner/5
-        // Shows all pets for a specific owner.
         public async Task<IActionResult> ByOwner(int ownerId)
         {
             if (ownerId <= 0)
                 return BadRequest("Invalid owner ID.");
 
-            var owner = await _context.Owners
-                .AsNoTracking()
-                .FirstOrDefaultAsync(o => o.OwnerId == ownerId);
-
+            var owner = await _context.Owners.AsNoTracking().FirstOrDefaultAsync(o => o.OwnerId == ownerId);
             if (owner == null)
                 return NotFound($"Owner with ID {ownerId} not found.");
 
@@ -166,8 +165,6 @@ namespace PetPhotographyApp.Controllers
             return View(pets);
         }
 
-        // GET: PetPage/BySpecies?species=Dog
-        // Shows all pets of a specific species.
         public async Task<IActionResult> BySpecies(string species)
         {
             if (string.IsNullOrEmpty(species))
@@ -186,7 +183,6 @@ namespace PetPhotographyApp.Controllers
             return View(pets);
         }
 
-        // Helper method to check if a pet exists in the database.
         private bool PetExists(int id)
         {
             return _context.Pets.Any(e => e.PetId == id);

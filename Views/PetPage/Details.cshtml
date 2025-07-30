@@ -1,0 +1,36 @@
+@model PetPhotographyApp.Models.Pet
+
+@{
+    ViewData["Title"] = "Pet Details";
+}
+
+<h1>Pet Details</h1>
+
+<dl class="row">
+    <dt class="col-sm-2">Name</dt>
+    <dd class="col-sm-10">@Model.Name</dd>
+
+    <dt class="col-sm-2">Species</dt>
+    <dd class="col-sm-10">@Model.Species</dd>
+
+    <dt class="col-sm-2">Breed</dt>
+    <dd class="col-sm-10">@Model.Breed</dd>
+
+    <dt class="col-sm-2">Age</dt>
+    <dd class="col-sm-10">@Model.Age</dd>
+
+    <dt class="col-sm-2">Color</dt>
+    <dd class="col-sm-10">@Model.Color</dd>
+
+    <dt class="col-sm-2">Notes</dt>
+    <dd class="col-sm-10">@Model.SpecialNotes</dd>
+
+    <dt class="col-sm-2">Description</dt>
+    <dd class="col-sm-10">@Model.Description</dd>
+
+    <dt class="col-sm-2">Owner</dt>
+    <dd class="col-sm-10">@Model.Owner.Name</dd>
+</dl>
+
+<a asp-action="Edit" asp-route-id="@Model.PetId" class="btn btn-warning">Edit</a>
+<a asp-action="Index" class="btn btn-secondary">Back to List</a>
