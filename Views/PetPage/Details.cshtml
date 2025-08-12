@@ -2,9 +2,18 @@
 
 @{
     ViewData["Title"] = "Pet Details";
+    var isAdmin = Context.Session.GetString("UserRole") == "Admin";
 }
 
 <h1>Pet Details</h1>
+
+<!-- ✅ Pet photo section -->
+@if (!string.IsNullOrEmpty(Model.PhotoPath))
+{
+    <div class="mb-3">
+        <img src="@Model.PhotoPath" alt="Photo of @Model.Name" style="max-width: 250px; border-radius: 10px;" />
+    </div>
+}
 
 <dl class="row">
     <dt class="col-sm-2">Name</dt>
@@ -19,18 +28,33 @@
     <dt class="col-sm-2">Age</dt>
     <dd class="col-sm-10">@Model.Age</dd>
 
-    <dt class="col-sm-2">Color</dt>
-    <dd class="col-sm-10">@Model.Color</dd>
+    @* Optional fields: safe to render if you have them in your model *@
+    @if (!string.IsNullOrWhiteSpace(Model.Color))
+    {
+        <dt class="col-sm-2">Color</dt>
+        <dd class="col-sm-10">@Model.Color</dd>
+    }
 
-    <dt class="col-sm-2">Notes</dt>
-    <dd class="col-sm-10">@Model.SpecialNotes</dd>
+    @if (!string.IsNullOrWhiteSpace(Model.SpecialNotes))
+    {
+        <dt class="col-sm-2">Notes</dt>
+        <dd class="col-sm-10">@Model.SpecialNotes</dd>
+    }
 
-    <dt class="col-sm-2">Description</dt>
-    <dd class="col-sm-10">@Model.Description</dd>
+    @if (!string.IsNullOrWhiteSpace(Model.Description))
+    {
+        <dt class="col-sm-2">Description</dt>
+        <dd class="col-sm-10">@Model.Description</dd>
+    }
 
     <dt class="col-sm-2">Owner</dt>
-    <dd class="col-sm-10">@Model.Owner.Name</dd>
+    <dd class="col-sm-10">@Model.Owner?.Name</dd>
 </dl>
 
-<a asp-action="Edit" asp-route-id="@Model.PetId" class="btn btn-warning">Edit</a>
-<a asp-action="Index" class="btn btn-secondary">Back to List</a>
+<div>
+    @if (isAdmin)
+    {
+        <a asp-action="Edit" asp-route-id="@Model.PetId" class="btn btn-warning">Edit</a>
+    }
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</div>

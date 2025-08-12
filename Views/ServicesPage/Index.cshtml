@@ -2,20 +2,24 @@
 
 @{
     ViewData["Title"] = "Services";
+    var isAdmin = Context.Session.GetString("UserRole") == "Admin";
 }
 
 <h1>Services</h1>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Add New Service</a>
-</p>
+@if (isAdmin)
+{
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Add New Service</a>
+    </p>
+}
 
 <table class="table table-striped">
     <thead>
         <tr>
             <th>Name</th>
             <th>Description</th>
-            <th></th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -25,9 +29,13 @@
             <td>@item.Name</td>
             <td>@item.Description</td>
             <td>
-                <a asp-controller="ServicesPage" asp-action="Edit" asp-route-id="@item.ServiceId">Edit</a> |
-                <a asp-controller="ServicesPage" asp-action="Details" asp-route-id="@item.ServiceId">Details</a> |
-                <a asp-controller="ServicesPage" asp-action="Delete" asp-route-id="@item.ServiceId">Delete</a>
+                <a asp-controller="ServicesPage" asp-action="Details" asp-route-id="@item.ServiceId" class="btn btn-sm btn-info">Details</a>
+
+                @if (isAdmin)
+                {
+                    <a asp-controller="ServicesPage" asp-action="Edit" asp-route-id="@item.ServiceId" class="btn btn-sm btn-warning ms-1">Edit</a>
+                    <a asp-controller="ServicesPage" asp-action="Delete" asp-route-id="@item.ServiceId" class="btn btn-sm btn-danger ms-1">Delete</a>
+                }
             </td>
         </tr>
     }

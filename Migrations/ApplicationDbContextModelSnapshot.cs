@@ -178,6 +178,9 @@ namespace PetPhotographyApp.Migrations
                     b.Property<int>("OwnerId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("PhotoPath")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("SpecialNotes")
                         .HasColumnType("TEXT");
 

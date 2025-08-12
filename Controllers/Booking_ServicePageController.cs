@@ -17,9 +17,11 @@ namespace PetPhotographyApp.Controllers
         }
 
         // GET: Booking_ServicePage
-        // Displays a list of all booking-service associations with related booking and service data.
+        // Show all booking-service associations (only for logged-in users)
         public async Task<IActionResult> Index()
         {
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Login");
+
             var list = await _context.Booking_Services
                 .Include(b => b.Booking)
                 .Include(b => b.Service)
@@ -29,9 +31,11 @@ namespace PetPhotographyApp.Controllers
         }
 
         // GET: Booking_ServicePage/Create
-        // Displays a form to create a new booking-service association.
+        // Render form to create a new booking-service link
         public IActionResult Create()
         {
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Login");
+
             var viewModel = new BookingServiceViewModel
             {
                 Bookings = _context.Bookings.Select(b => new SelectListItem
@@ -50,11 +54,13 @@ namespace PetPhotographyApp.Controllers
         }
 
         // POST: Booking_ServicePage/Create
-        // Handles the form submission to create a new booking-service association.
+        // Handle form submission to create booking-service link
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BookingServiceViewModel viewModel)
         {
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Login");
+
             if (ModelState.IsValid)
             {
                 var entity = new Booking_Service
@@ -68,7 +74,7 @@ namespace PetPhotographyApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-             // Repopulate dropdowns if model state is invalid
+            // Repopulate dropdowns if form is invalid
             viewModel.Bookings = _context.Bookings.Select(b => new SelectListItem
             {
                 Value = b.BookingId.ToString(),
@@ -84,9 +90,11 @@ namespace PetPhotographyApp.Controllers
         }
 
         // GET: Booking_ServicePage/Delete
-        // Displays a confirmation view for deleting a specific booking-service association.
+        // Only Admin can delete booking-service link
         public async Task<IActionResult> Delete(int? bookingId, int? serviceId)
         {
+            if (!IsAdmin()) return Unauthorized();
+
             if (bookingId == null || serviceId == null)
                 return NotFound();
 
@@ -101,11 +109,13 @@ namespace PetPhotographyApp.Controllers
         }
 
         // POST: Booking_ServicePage/DeleteConfirmed
-        // Executes deletion of the selected booking-service association after confirmation.
+        // Execute deletion (only for Admin)
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int bookingId, int serviceId)
         {
+            if (!IsAdmin()) return Unauthorized();
+
             var entity = await _context.Booking_Services.FindAsync(bookingId, serviceId);
             if (entity != null)
             {
@@ -113,6 +123,18 @@ namespace PetPhotographyApp.Controllers
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Index));
+        }
+
+        // Check if current user is logged in
+        private bool IsLoggedIn()
+        {
+            return !string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole"));
+        }
+
+        // Check if current user is Admin
+        private bool IsAdmin()
+        {
+            return HttpContext.Session.GetString("UserRole") == "Admin";
         }
     }
 }

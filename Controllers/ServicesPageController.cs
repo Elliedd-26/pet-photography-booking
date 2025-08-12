@@ -2,13 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using PetPhotographyApp.Data;
 using PetPhotographyApp.Models;
-using PetPhotographyApp.Models.ViewModels;
 using PetPhotographyApp.DTOs;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PetPhotographyApp.Controllers
 {
+    /// <summary>
+    /// Controller to manage service-related operations (admin can modify, users can view).
+    /// </summary>
     public class ServicesPageController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -18,16 +18,23 @@ namespace PetPhotographyApp.Controllers
             _context = context;
         }
 
-        // GET: ServicesPage
+        /// <summary>
+        /// Displays all available services.
+        /// </summary>
         public async Task<IActionResult> Index()
         {
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Login");
+
             var services = await _context.Services.ToListAsync();
             return View(services);
         }
 
-        // GET: ServicesPage/Details/5
+        /// <summary>
+        /// Shows details for a specific service.
+        /// </summary>
         public async Task<IActionResult> Details(int? id)
         {
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Account");
             if (id == null) return NotFound();
 
             var service = await _context.Services.FirstOrDefaultAsync(m => m.ServiceId == id);
@@ -43,17 +50,24 @@ namespace PetPhotographyApp.Controllers
             return View(dto);
         }
 
-        // GET: ServicesPage/Create
+        /// <summary>
+        /// Renders the service creation form (Admin only).
+        /// </summary>
         public IActionResult Create()
         {
+            if (!IsAdmin()) return Unauthorized();
             return View();
         }
 
-        // POST: ServicesPage/Create
+        /// <summary>
+        /// Handles service creation (Admin only).
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,Price")] ServiceDTO serviceDto)
         {
+            if (!IsAdmin()) return Unauthorized();
+
             if (ModelState.IsValid)
             {
                 var service = new Service
@@ -68,9 +82,12 @@ namespace PetPhotographyApp.Controllers
             return View(serviceDto);
         }
 
-        // GET: ServicesPage/Edit/5
+        /// <summary>
+        /// Renders the service edit form (Admin only).
+        /// </summary>
         public async Task<IActionResult> Edit(int? id)
         {
+            if (!IsAdmin()) return Unauthorized();
             if (id == null) return NotFound();
 
             var service = await _context.Services.FindAsync(id);
@@ -86,11 +103,14 @@ namespace PetPhotographyApp.Controllers
             return View(dto);
         }
 
-        // POST: ServicesPage/Edit/5
+        /// <summary>
+        /// Handles service update (Admin only).
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ServiceId,Name,Price")] ServiceDTO serviceDto)
         {
+            if (!IsAdmin()) return Unauthorized();
             if (id != serviceDto.ServiceId) return NotFound();
 
             if (ModelState.IsValid)
@@ -118,9 +138,12 @@ namespace PetPhotographyApp.Controllers
             return View(serviceDto);
         }
 
-        // GET: ServicesPage/Delete/5
+        /// <summary>
+        /// Renders delete confirmation view (Admin only).
+        /// </summary>
         public async Task<IActionResult> Delete(int? id)
         {
+            if (!IsAdmin()) return Unauthorized();
             if (id == null) return NotFound();
 
             var service = await _context.Services.FirstOrDefaultAsync(m => m.ServiceId == id);
@@ -136,11 +159,15 @@ namespace PetPhotographyApp.Controllers
             return View(dto);
         }
 
-        // POST: ServicesPage/Delete/5
+        /// <summary>
+        /// Executes service deletion after confirmation (Admin only).
+        /// </summary>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (!IsAdmin()) return Unauthorized();
+
             var service = await _context.Services.FindAsync(id);
             if (service != null)
             {
@@ -148,6 +175,22 @@ namespace PetPhotographyApp.Controllers
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction(nameof(Index));
+        }
+
+        /// <summary>
+        /// Checks if a user is logged in.
+        /// </summary>
+        private bool IsLoggedIn()
+        {
+            return HttpContext.Session.GetString("UserRole") != null;
+        }
+
+        /// <summary>
+        /// Checks if the logged-in user is an admin.
+        /// </summary>
+        private bool IsAdmin()
+        {
+            return HttpContext.Session.GetString("UserRole") == "Admin";
         }
     }
 }

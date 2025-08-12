@@ -2,17 +2,24 @@
 
 @{
     ViewData["Title"] = "Pets";
+    var userRole = Context.Session.GetString("UserRole");
+    var isAdmin = userRole == "Admin";
+    var isLoggedIn = !string.IsNullOrEmpty(userRole);
 }
 
 <h1>Pets</h1>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Add New Pet</a>
-</p>
+@if (isAdmin)
+{
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Add New Pet</a>
+    </p>
+}
 
 <table class="table table-striped">
     <thead>
         <tr>
+            <th>Photo</th>
             <th>Name</th>
             <th>Species</th>
             <th>Breed</th>
@@ -24,14 +31,27 @@
     @foreach (var pet in Model)
     {
         <tr>
+            <td>
+                @if (!string.IsNullOrEmpty(pet.PhotoPath))
+                {
+                    <img src="@pet.PhotoPath" alt="Photo of @pet.Name" width="80" height="80" style="object-fit: cover; border-radius: 10px;" />
+                }
+                else
+                {
+                    <span>No photo</span>
+                }
+            </td>
             <td>@pet.Name</td>
             <td>@pet.Species</td>
             <td>@pet.Breed</td>
-            <td>@pet.Owner.Name</td>
+            <td>@pet.Owner?.Name</td>
             <td>
-                <a asp-action="Details" asp-route-id="@pet.PetId">Details</a> |
-                <a asp-action="Edit" asp-route-id="@pet.PetId">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@pet.PetId">Delete</a>
+                <a asp-action="Details" asp-route-id="@pet.PetId" class="btn btn-sm btn-info">Details</a>
+                @if (isAdmin)
+                {
+                    <a asp-action="Edit" asp-route-id="@pet.PetId" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@pet.PetId" class="btn btn-sm btn-danger">Delete</a>
+                }
             </td>
         </tr>
     }

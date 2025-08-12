@@ -2,13 +2,17 @@
 
 @{
     ViewData["Title"] = "Notifications";
+    var isAdmin = Context.Session.GetString("UserRole") == "Admin";
 }
 
 <h1>Notifications</h1>
 
-<p>
-    <a asp-controller="NotificationsPage" asp-action="Create" class="btn btn-primary">New Notification</a>
-</p>
+@if (isAdmin)
+{
+    <p>
+        <a asp-controller="NotificationsPage" asp-action="Create" class="btn btn-primary">New Notification</a>
+    </p>
+}
 
 <table class="table table-striped">
     <thead>
@@ -29,9 +33,13 @@
             <td>@item.RecipientOwner?.Name</td>
             <td>@item.SentAt.ToString("g")</td>
             <td>
-                <a asp-controller="NotificationsPage" asp-action="Details" asp-route-id="@item.NotificationId">Details</a> |
-                <a asp-controller="NotificationsPage" asp-action="Edit" asp-route-id="@item.NotificationId">Edit</a> |
-                <a asp-controller="NotificationsPage" asp-action="Delete" asp-route-id="@item.NotificationId">Delete</a>
+                <a asp-controller="NotificationsPage" asp-action="Details" asp-route-id="@item.NotificationId" class="btn btn-sm btn-info">Details</a>
+
+                @if (isAdmin)
+                {
+                    <a asp-controller="NotificationsPage" asp-action="Edit" asp-route-id="@item.NotificationId" class="btn btn-sm btn-warning ms-1">Edit</a>
+                    <a asp-controller="NotificationsPage" asp-action="Delete" asp-route-id="@item.NotificationId" class="btn btn-sm btn-danger ms-1">Delete</a>
+                }
             </td>
         </tr>
     }

@@ -4,111 +4,171 @@ using PetPhotographyApp.Data;
 using PetPhotographyApp.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-public class NotificationsPageController : Controller
+namespace PetPhotographyApp.Controllers
 {
-    private readonly ApplicationDbContext _context;
-
-    public NotificationsPageController(ApplicationDbContext context)
+    /// <summary>
+    /// MVC Controller for managing notification-related pages.
+    /// Only admins can create, edit, or delete notifications.
+    /// All users can view the list and details.
+    /// </summary>
+    public class NotificationsPageController : Controller
     {
-        _context = context;
-    }
+        private readonly ApplicationDbContext _context;
 
-    [HttpGet("")]
-    public async Task<IActionResult> Index()
-    {
-        var notifications = await _context.Notifications
-            .Include(n => n.RecipientOwner)
-            .ToListAsync();
-        return View(notifications);
-    }
-
-    [HttpGet("Details/{id}")]
-    public async Task<IActionResult> Details(int id)
-    {
-        var notification = await _context.Notifications
-            .Include(n => n.RecipientOwner)
-            .FirstOrDefaultAsync(m => m.NotificationId == id);
-        if (notification == null) return NotFound();
-        return View(notification);
-    }
-
-    [HttpGet("Create")]
-    public IActionResult Create()
-    {
-        ViewData["RecipientOwnerId"] = new SelectList(_context.Owners, "OwnerId", "Name");
-        return View();
-    }
-
-    [HttpPost("Create")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("NotificationId,Title,Message,Type,IsRead,SentAt,RecipientOwnerId")] Notification notification)
-    {
-        if (ModelState.IsValid)
+        public NotificationsPageController(ApplicationDbContext context)
         {
-            _context.Add(notification);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            _context = context;
         }
-        ViewData["RecipientOwnerId"] = new SelectList(_context.Owners, "OwnerId", "Name", notification.RecipientOwnerId);
-        return View(notification);
-    }
 
-    [HttpGet("Edit/{id}")]
-    public async Task<IActionResult> Edit(int id)
-    {
-        var notification = await _context.Notifications.FindAsync(id);
-        if (notification == null) return NotFound();
-
-        ViewData["RecipientOwnerId"] = new SelectList(_context.Owners, "OwnerId", "Name", notification.RecipientOwnerId);
-        return View(notification);
-    }
-
-    [HttpPost("Edit/{id}")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("NotificationId,Title,Message,Type,IsRead,SentAt,RecipientOwnerId")] Notification notification)
-    {
-        if (id != notification.NotificationId) return NotFound();
-
-        if (ModelState.IsValid)
+        /// <summary>
+        /// Displays a list of all notifications.
+        /// </summary>
+        public async Task<IActionResult> Index()
         {
-            try
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Login");
+
+            var notifications = await _context.Notifications
+                .Include(n => n.RecipientOwner)
+                .ToListAsync();
+            return View(notifications);
+        }
+
+        /// <summary>
+        /// Displays details of a specific notification.
+        /// </summary>
+        public async Task<IActionResult> Details(int id)
+        {
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Login");
+
+            var notification = await _context.Notifications
+                .Include(n => n.RecipientOwner)
+                .FirstOrDefaultAsync(n => n.NotificationId == id);
+
+            if (notification == null) return NotFound();
+            return View(notification);
+        }
+
+        /// <summary>
+        /// Renders form to create a new notification (Admin only).
+        /// </summary>
+        public IActionResult Create()
+        {
+            if (!IsAdmin()) return Unauthorized();
+
+            ViewData["RecipientOwnerId"] = new SelectList(_context.Owners, "OwnerId", "Name");
+            return View();
+        }
+
+        /// <summary>
+        /// Handles creation of a new notification (Admin only).
+        /// </summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("NotificationId,Title,Message,Type,IsRead,SentAt,RecipientOwnerId")] Notification notification)
+        {
+            if (!IsAdmin()) return Unauthorized();
+
+            if (ModelState.IsValid)
             {
-                _context.Update(notification);
+                _context.Add(notification);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+
+            ViewData["RecipientOwnerId"] = new SelectList(_context.Owners, "OwnerId", "Name", notification.RecipientOwnerId);
+            return View(notification);
+        }
+
+        /// <summary>
+        /// Renders form to edit an existing notification (Admin only).
+        /// </summary>
+        public async Task<IActionResult> Edit(int id)
+        {
+            if (!IsAdmin()) return Unauthorized();
+
+            var notification = await _context.Notifications.FindAsync(id);
+            if (notification == null) return NotFound();
+
+            ViewData["RecipientOwnerId"] = new SelectList(_context.Owners, "OwnerId", "Name", notification.RecipientOwnerId);
+            return View(notification);
+        }
+
+        /// <summary>
+        /// Handles update of a notification (Admin only).
+        /// </summary>
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("NotificationId,Title,Message,Type,IsRead,SentAt,RecipientOwnerId")] Notification notification)
+        {
+            if (!IsAdmin()) return Unauthorized();
+            if (id != notification.NotificationId) return NotFound();
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(notification);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!_context.Notifications.Any(e => e.NotificationId == id))
+                        return NotFound();
+                    throw;
+                }
+                return RedirectToAction("Index");
+            }
+
+            ViewData["RecipientOwnerId"] = new SelectList(_context.Owners, "OwnerId", "Name", notification.RecipientOwnerId);
+            return View(notification);
+        }
+
+        /// <summary>
+        /// Displays delete confirmation page (Admin only).
+        /// </summary>
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (!IsAdmin()) return Unauthorized();
+
+            var notification = await _context.Notifications
+                .Include(n => n.RecipientOwner)
+                .FirstOrDefaultAsync(n => n.NotificationId == id);
+            if (notification == null) return NotFound();
+            return View(notification);
+        }
+
+        /// <summary>
+        /// Handles deletion of a notification (Admin only).
+        /// </summary>
+        [HttpPost, ActionName("DeleteConfirmed")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            if (!IsAdmin()) return Unauthorized();
+
+            var notification = await _context.Notifications.FindAsync(id);
+            if (notification != null)
+            {
+                _context.Notifications.Remove(notification);
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!_context.Notifications.Any(e => e.NotificationId == id))
-                    return NotFound();
-                throw;
-            }
             return RedirectToAction("Index");
         }
 
-        ViewData["RecipientOwnerId"] = new SelectList(_context.Owners, "OwnerId", "Name", notification.RecipientOwnerId);
-        return View(notification);
-    }
-
-    [HttpGet("Delete/{id}")]
-    public async Task<IActionResult> Delete(int id)
-    {
-        var notification = await _context.Notifications
-            .Include(n => n.RecipientOwner)
-            .FirstOrDefaultAsync(m => m.NotificationId == id);
-        if (notification == null) return NotFound();
-        return View(notification);
-    }
-
-    [HttpPost("Delete/{id}"), ActionName("DeleteConfirmed")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int id)
-    {
-        var notification = await _context.Notifications.FindAsync(id);
-        if (notification != null)
+        /// <summary>
+        /// Returns true if user is logged in.
+        /// </summary>
+        private bool IsLoggedIn()
         {
-            _context.Notifications.Remove(notification);
-            await _context.SaveChangesAsync();
+            return HttpContext.Session.GetString("UserRole") != null;
         }
-        return RedirectToAction("Index");
+
+        /// <summary>
+        /// Returns true if user is an Admin.
+        /// </summary>
+        private bool IsAdmin()
+        {
+            return HttpContext.Session.GetString("UserRole") == "Admin";
+        }
     }
 }

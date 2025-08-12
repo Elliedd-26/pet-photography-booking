@@ -2,13 +2,17 @@
 
 @{
     ViewData["Title"] = "Photographers";
+    var isAdmin = Context.Session.GetString("UserRole") == "Admin";
 }
 
 <h1>Photographers</h1>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Add New Photographer</a>
-</p>
+@if (isAdmin)
+{
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Add New Photographer</a>
+    </p>
+}
 
 <table class="table table-striped">
     <thead>
@@ -16,7 +20,7 @@
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
-            <th></th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -27,9 +31,13 @@
             <td>@item.Email</td>
             <td>@item.PhoneNumber</td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.PhotographerId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.PhotographerId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.PhotographerId">Delete</a>
+                <a asp-action="Details" asp-route-id="@item.PhotographerId" class="btn btn-sm btn-info">Details</a>
+
+                @if (isAdmin)
+                {
+                    <a asp-action="Edit" asp-route-id="@item.PhotographerId" class="btn btn-sm btn-warning ms-1">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.PhotographerId" class="btn btn-sm btn-danger ms-1">Delete</a>
+                }
             </td>
         </tr>
     }

@@ -1,4 +1,3 @@
-<pre>@Html.Raw(Json.Serialize(Model))</pre>
 @model PetPhotographyApp.Models.Pet
 
 @{
@@ -7,36 +6,59 @@
 
 <h1>Edit Pet</h1>
 
-<form asp-action="Edit" method="post">
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
     @Html.AntiForgeryToken()
-
     <input type="hidden" asp-for="PetId" />
-    
+
     <div class="form-group">
         <label asp-for="Name"></label>
         <input asp-for="Name" class="form-control" />
     </div>
+
     <div class="form-group">
         <label asp-for="Species"></label>
         <input asp-for="Species" class="form-control" />
     </div>
+
     <div class="form-group">
         <label asp-for="Breed"></label>
         <input asp-for="Breed" class="form-control" />
     </div>
+
     <div class="form-group">
         <label asp-for="Age"></label>
         <input asp-for="Age" class="form-control" />
     </div>
+
     <div class="form-group">
         <label asp-for="Description"></label>
         <textarea asp-for="Description" class="form-control"></textarea>
     </div>
+
     <div class="form-group">
         <label asp-for="OwnerId">Owner</label>
-        <select asp-for="OwnerId" class="form-control" asp-items="@(ViewBag.OwnerId)"></select>
+        <select asp-for="OwnerId" class="form-control" asp-items="@(new SelectList(ViewBag.Owners, "OwnerId", "Name"))"></select>
+    </div>
+
+    <!-- ✅ Show current photo -->
+    @if (!string.IsNullOrEmpty(Model.PhotoPath))
+    {
+        <div class="mb-3">
+            <label>Current Photo:</label><br />
+            <img src="@Model.PhotoPath" alt="Current Pet Photo" width="120" style="object-fit: cover; border-radius: 8px;" />
+        </div>
+    }
+
+    <!-- ✅ Allow new photo upload -->
+    <div class="form-group">
+        <label>Upload New Photo</label>
+        <input type="file" name="photo" accept="image/*" class="form-control" />
     </div>
 
     <button type="submit" class="btn btn-primary">Save</button>
     <a asp-action="Index" class="btn btn-secondary">Back</a>
 </form>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

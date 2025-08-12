@@ -1,17 +1,37 @@
 ﻿@{
     ViewData["Title"] = "Welcome to PetLens";
+    var userRole = Context.Session.GetString("UserRole");
+    var isLoggedIn = !string.IsNullOrEmpty(userRole);
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to PetLens!</h1>
-    <p class="lead">Capture beautiful memories with your furry friends.</p>
+<div class="text-center mt-5">
+    <h1 class="display-4">📸 Welcome to PetLens!</h1>
+    <p class="lead">Capture beautiful memories with your furry friends 🐾</p>
 
-    <p>PetLens is a dedicated platform for booking professional pet photography sessions. Whether it's a playful puppy shoot or a heartfelt senior portrait, we help you create lasting memories.</p>
+    <p class="mb-4 px-5">
+        PetLens is a dedicated platform for booking professional pet photography sessions.
+        Whether it's a playful puppy shoot or a heartfelt senior portrait,
+        we help you create lasting memories with ease.
+    </p>
 
-    <hr />
+    <img src="~/images/banner.png"
+     class="img-fluid rounded shadow mb-4"
+     style="max-height: 400px;" alt="Pet photography banner" />
 
-    <div class="d-flex justify-content-center gap-3">
-        <a class="btn btn-primary btn-lg" asp-controller="Bookings" asp-action="Create">Book a Session</a>
-        <a class="btn btn-outline-secondary btn-lg" asp-controller="Services" asp-action="Index">Explore Services</a>
-    </div>
+    <hr class="my-4" />
+
+    @if (isLoggedIn)
+    {
+        <div class="d-flex justify-content-center gap-3">
+            <a class="btn btn-primary btn-lg" asp-controller="BookingPage" asp-action="Create">📅 Book a Session</a>
+            <a class="btn btn-outline-secondary btn-lg" asp-controller="ServicesPage" asp-action="Index">🛍️ Explore Services</a>
+        </div>
+    }
+    else
+    {
+        <div class="d-flex justify-content-center gap-3">
+            <a class="btn btn-primary btn-lg" asp-controller="Login" asp-action="Login">🔐 Log In to Book</a>
+            <a class="btn btn-outline-secondary btn-lg" asp-controller="ServicesPage" asp-action="Index">🛍️ Explore Services</a>
+        </div>
+    }
 </div>
