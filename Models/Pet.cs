@@ -23,6 +23,8 @@ namespace PetPhotographyApp.Models
         public string? SpecialNotes { get; set; }
         public string? Description { get; set; }
 
+        public string? PhotoPath { get; set; }  // optional photo path for profile picture
+
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         [Required]

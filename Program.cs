@@ -4,6 +4,16 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Register session and context accessor
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
+builder.Services.AddHttpContextAccessor(); 
+
+// Optional: set up authentication scheme (recommended for better redirect control)
+builder.Services.AddAuthentication("MyCookieAuth").AddCookie("MyCookieAuth", options =>
+{
+    options.LoginPath = "/Login/Login"; // ✅ Fix wrong redirect to /Account/Login
+});
 
 builder.Services.AddControllersWithViews()
     .AddJsonOptions(options =>
@@ -21,23 +31,23 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-//seeds data here
+// Seed data here if needed
 
-// Rest of your configuration stays the same
 if (app.Environment.IsDevelopment())
 {
     Console.WriteLine("Swagger is ON!");
     app.UseSwagger();
     app.UseSwaggerUI();
     app.UseDeveloperExceptionPage();
-    
-    //app.UseExceptionHandler("/Home/Error");
-    //app.UseHsts();
 }
 
+// Middleware pipeline
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+
+app.UseSession();              // For session variables like UserRole
+app.UseAuthentication();       // ✅ Required for custom login path to work
 app.UseAuthorization();
 
 app.MapControllerRoute(

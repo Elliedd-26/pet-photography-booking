@@ -2,10 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using PetPhotographyApp.Data;
 using PetPhotographyApp.Models;
-using PetPhotographyApp.Models.ViewModels;
 
 namespace PetPhotographyApp.Controllers
 {
+    /// <summary>
+    /// Controller to manage photographers (admin can create/edit/delete; all users can view).
+    /// </summary>
     public class PhotographersPageController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -15,16 +17,23 @@ namespace PetPhotographyApp.Controllers
             _context = context;
         }
 
-        // GET: PhotographersPage
+        /// <summary>
+        /// Display all photographers in the system.
+        /// </summary>
         public async Task<IActionResult> Index()
         {
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Login");
+
             var photographers = await _context.Photographers.ToListAsync();
             return View(photographers);
         }
 
-        // GET: PhotographersPage/Details/5
+        /// <summary>
+        /// Show detailed info for a specific photographer.
+        /// </summary>
         public async Task<IActionResult> Details(int? id)
         {
+            if (!IsLoggedIn()) return RedirectToAction("Login", "Login");
             if (id == null) return NotFound();
 
             var photographer = await _context.Photographers
@@ -32,21 +41,27 @@ namespace PetPhotographyApp.Controllers
                 .FirstOrDefaultAsync(p => p.PhotographerId == id);
 
             if (photographer == null) return NotFound();
-
             return View(photographer);
         }
 
-        // GET: PhotographersPage/Create
+        /// <summary>
+        /// Render create photographer form (Admin only).
+        /// </summary>
         public IActionResult Create()
         {
+            if (!IsAdmin()) return Unauthorized();
             return View();
         }
 
-        // POST: PhotographersPage/Create
+        /// <summary>
+        /// Handle photographer creation (Admin only).
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Photographer photographer)
         {
+            if (!IsAdmin()) return Unauthorized();
+
             if (ModelState.IsValid)
             {
                 _context.Add(photographer);
@@ -56,9 +71,12 @@ namespace PetPhotographyApp.Controllers
             return View(photographer);
         }
 
-        // GET: PhotographersPage/Edit/5
+        /// <summary>
+        /// Render edit form for a photographer (Admin only).
+        /// </summary>
         public async Task<IActionResult> Edit(int? id)
         {
+            if (!IsAdmin()) return Unauthorized();
             if (id == null) return NotFound();
 
             var photographer = await _context.Photographers.FindAsync(id);
@@ -67,11 +85,14 @@ namespace PetPhotographyApp.Controllers
             return View(photographer);
         }
 
-        // POST: PhotographersPage/Edit/5
+        /// <summary>
+        /// Handle photographer update (Admin only).
+        /// </summary>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Photographer photographer)
         {
+            if (!IsAdmin()) return Unauthorized();
             if (id != photographer.PhotographerId) return NotFound();
 
             if (ModelState.IsValid)
@@ -92,23 +113,31 @@ namespace PetPhotographyApp.Controllers
             return View(photographer);
         }
 
-        // GET: PhotographersPage/Delete/5
+        /// <summary>
+        /// Show delete confirmation view (Admin only).
+        /// </summary>
         public async Task<IActionResult> Delete(int? id)
         {
+            if (!IsAdmin()) return Unauthorized();
             if (id == null) return NotFound();
 
             var photographer = await _context.Photographers
                 .FirstOrDefaultAsync(p => p.PhotographerId == id);
+
             if (photographer == null) return NotFound();
 
             return View(photographer);
         }
 
-        // POST: PhotographersPage/Delete/5
+        /// <summary>
+        /// Handle confirmed delete of a photographer (Admin only).
+        /// </summary>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (!IsAdmin()) return Unauthorized();
+
             var photographer = await _context.Photographers.FindAsync(id);
             if (photographer != null)
             {
@@ -117,6 +146,21 @@ namespace PetPhotographyApp.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
+        /// <summary>
+        /// Returns true if current user is logged in.
+        /// </summary>
+        private bool IsLoggedIn()
+        {
+            return HttpContext.Session.GetString("UserRole") != null;
+        }
+
+        /// <summary>
+        /// Returns true if current user is Admin.
+        /// </summary>
+        private bool IsAdmin()
+        {
+            return HttpContext.Session.GetString("UserRole") == "Admin";
+        }
     }
 }
-

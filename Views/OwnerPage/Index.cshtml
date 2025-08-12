@@ -2,38 +2,46 @@
 
 @{
     ViewData["Title"] = "Owners";
+    var isAdmin = Context.Session.GetString("UserRole") == "Admin";
 }
 
 <h1>Owners</h1>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Add New Owner</a>
-</p>
+@if (isAdmin)
+{
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Add New Owner</a>
+    </p>
+}
 
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>Owner ID</th>
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
-            <th></th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-    <tr>
-        <td>@item.OwnerId</td>
-        <td>@item.Name</td>
-        <td>@item.Email</td>
-        <td>@item.PhoneNumber</td>
-        <td>
-            <a asp-action="Edit" asp-route-id="@item.OwnerId">Edit</a> |
-            <a asp-action="Details" asp-route-id="@item.OwnerId">Details</a> |
-            <a asp-action="Delete" asp-route-id="@item.OwnerId">Delete</a>
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.OwnerId</td>
+            <td>@item.Name</td>
+            <td>@item.Email</td>
+            <td>@item.PhoneNumber</td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.OwnerId" class="btn btn-sm btn-info">Details</a>
+
+                @if (isAdmin)
+                {
+                    <a asp-action="Edit" asp-route-id="@item.OwnerId" class="btn btn-sm btn-warning ms-1">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.OwnerId" class="btn btn-sm btn-danger ms-1">Delete</a>
+                }
+            </td>
+        </tr>
+    }
     </tbody>
 </table>
-

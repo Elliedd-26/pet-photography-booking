@@ -1,14 +1,15 @@
-﻿<!DOCTYPE html>
+﻿@inject IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - PetLens</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
 </head>
 <body>
     <header>
@@ -36,19 +37,41 @@
                             <a class="nav-link" asp-controller="OwnerPage" asp-action="Index">Owners</a>
                         </li>
                     </ul>
+
+                    <ul class="navbar-nav ms-auto">
+                        @if (HttpContextAccessor.HttpContext?.Session?.GetString("UserRole") != null)
+                        {
+                            <li class="nav-item">
+                                <span class="nav-link">👤 @HttpContextAccessor.HttpContext?.Session?.GetString("UserEmail")</span>
+                            </li>
+                            <li class="nav-item">
+                                <span class="nav-link text-secondary">Role: @HttpContextAccessor.HttpContext?.Session?.GetString("UserRole")</span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-danger" asp-controller="Login" asp-action="Logout">Logout</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Login" asp-action="Login">Login</a>
+                            </li>
+                        }
+                    </ul>
                 </div>
             </div>
         </nav>
     </header>
+
     <main role="main" class="container pb-3">
         @RenderBody()
     </main>
 
-    <footer class="border-top text-muted text-center">
+    <footer class="border-top text-muted text-center mt-4">
         <div class="container">&copy; @DateTime.Now.Year - PetLens</div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
