@@ -25,7 +25,7 @@ namespace PetPhotographyApp.Controllers
         /// Returns a list of photographers in the system.
         /// </summary>
         /// <example>
-        /// GET http://localhost:7198/api/Photographers -> [{"PhotographerId":1,"Name":"Kim Smith"}, {"PhotographerId":2,"Name":"Emily Johnson"}, ...]
+        /// GET http://localhost:5000/api/Photographers -> [{"PhotographerId":1,"Name":"Kim Smith"}, {"PhotographerId":2,"Name":"Emily Johnson"}, ...]
         /// </example>
         /// <returns>
         /// A list of Photographer objects.
@@ -40,7 +40,7 @@ namespace PetPhotographyApp.Controllers
         /// Returns a single photographer by ID.
         /// </summary>
         /// <example>
-        /// GET http://localhost:7198/api/Photographers/5 -> {"PhotographerId":5,"Name":"Kim Smith"}
+        /// GET http://localhost:5000/api/Photographers/5 -> {"PhotographerId":5,"Name":"Kim Smith"}
         /// </example>
         /// <returns>
         /// A Photographer object if found; otherwise, 404 Not Found.
@@ -62,7 +62,7 @@ namespace PetPhotographyApp.Controllers
         /// Updates an existing photographer in the system.
         /// </summary>
         /// <example>
-        /// PUT http://localhost:7198/api/Photographers/5
+        /// PUT http://localhost:5000/api/Photographers/5
         /// Body: {"PhotographerId":5,"Name":"Updated Name"}
         /// </example>
         /// <returns>
@@ -101,7 +101,7 @@ namespace PetPhotographyApp.Controllers
         /// Adds a new photographer to the system.
         /// </summary>
         /// <example>
-        /// POST http://localhost:7198/api/Photographers
+        /// POST http://localhost:5000/api/Photographers
         /// Body: {"Name":"New Photographer"}
         /// </example>
         /// <returns>
@@ -120,7 +120,7 @@ namespace PetPhotographyApp.Controllers
         /// Deletes a photographer by ID.
         /// </summary>
         /// <example>
-        /// DELETE http://localhost:7198/api/Photographers/5
+        /// DELETE http://localhost:5000/api/Photographers/5
         /// </example>
         /// <returns>
         /// NoContent on success, NotFound if photographer does not exist.

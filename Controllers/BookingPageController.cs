@@ -18,7 +18,12 @@ namespace PetPhotographyApp.Controllers
             _context = context;
         }
 
-        // GET: BookingPage
+      
+        /// <summary>
+        /// Displays a list of all bookings (admin and user access).
+        /// </summary>
+        /// <returns>View with a list of BookingSummaryViewModel. Redirects to login if user is not logged in.</returns>
+        /// <example>GET: BookingPage</example>  
         public async Task<IActionResult> Index()
         {
             if (!IsLoggedIn()) return RedirectToAction("Login", "Login");
@@ -42,7 +47,12 @@ namespace PetPhotographyApp.Controllers
             return View(bookings);
         }
 
-        // GET: BookingPage/Details/5
+        /// <summary>
+        /// Displays detailed information for a specific booking.
+        /// </summary>
+        /// <param name="id">The ID of the booking</param>
+        /// <returns>BookingDetailsViewModel or 404 if not found. Redirects to login if not logged in.</returns>
+        /// <example>GET: BookingPage/Details/5</example>
         public async Task<IActionResult> Details(int id)
         {
             if (!IsLoggedIn()) return RedirectToAction("Login", "Login");
@@ -82,7 +92,11 @@ namespace PetPhotographyApp.Controllers
             return View(viewModel);
         }
 
-        // GET: BookingPage/Create
+        /// <summary>
+        /// Displays the booking creation form.
+        /// </summary>
+        /// <returns>View with BookingFormViewModel. Redirects to login if not logged in.</returns>
+        /// <example>GET: BookingPage/Create</example>
         public async Task<IActionResult> Create()
         {
             if (!IsLoggedIn()) return RedirectToAction("Login", "Login");
@@ -99,7 +113,12 @@ namespace PetPhotographyApp.Controllers
             return View(viewModel);
         }
 
-        // POST: BookingPage/Create
+        /// <summary>
+        /// Handles the creation of a new booking with selected services.
+        /// </summary>
+        /// <param name="model">The form model containing booking and selected services</param>
+        /// <returns>Redirects to Index on success. Redisplays form with validation errors on failure.</returns>
+        /// <example>POST: BookingPage/Create</example>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BookingFormViewModel model)
@@ -150,7 +169,12 @@ namespace PetPhotographyApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: BookingPage/Edit/5
+        /// <summary>
+        /// Loads the edit form for an existing booking (Admin only).
+        /// </summary>
+        /// <param name="id">The ID of the booking to edit</param>
+        /// <returns>View with BookingFormViewModel or 404 if booking not found</returns>
+        /// <example>GET: BookingPage/Edit/5</example>
         public async Task<IActionResult> Edit(int id)
         {
             if (!IsAdmin()) return Unauthorized();
@@ -177,7 +201,13 @@ namespace PetPhotographyApp.Controllers
             return View(model);
         }
 
-        // POST: BookingPage/Edit/5
+        /// <summary>
+        /// Saves changes made to a booking (Admin only).
+        /// </summary>
+        /// <param name="id">Booking ID</param>
+        /// <param name="model">Updated form model</param>
+        /// <returns>Redirects to Index on success. Redisplays form or returns error on failure.</returns>
+        /// <example>POST: BookingPage/Edit/5</example>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, BookingFormViewModel model)
@@ -223,7 +253,12 @@ namespace PetPhotographyApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: BookingPage/Delete/5
+        /// <summary>
+        /// Displays confirmation page for deleting a booking (Admin only).
+        /// </summary>
+        /// <param name="id">The ID of the booking</param>
+        /// <returns>View with booking details for confirmation</returns>
+        /// <example>GET: BookingPage/Delete/5</example>
         public async Task<IActionResult> Delete(int id)
         {
             if (!IsAdmin()) return Unauthorized();
@@ -239,7 +274,12 @@ namespace PetPhotographyApp.Controllers
             return View(booking);
         }
 
-        // POST: BookingPage/Delete/5
+        /// <summary>
+        /// Confirms and executes the deletion of a booking and its related services (Admin only).
+        /// </summary>
+        /// <param name="id">The ID of the booking to delete</param>
+        /// <returns>Redirects to the Index view after deletion</returns>
+        /// <example>POST: BookingPage/Delete/5</example>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

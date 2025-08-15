@@ -12,7 +12,7 @@ builder.Services.AddHttpContextAccessor();
 // Optional: set up authentication scheme (recommended for better redirect control)
 builder.Services.AddAuthentication("MyCookieAuth").AddCookie("MyCookieAuth", options =>
 {
-    options.LoginPath = "/Login/Login"; // ✅ Fix wrong redirect to /Account/Login
+    options.LoginPath = "/Login/Login"; // Fix wrong redirect to /Account/Login
 });
 
 builder.Services.AddControllersWithViews()
@@ -47,7 +47,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseSession();              // For session variables like UserRole
-app.UseAuthentication();       // ✅ Required for custom login path to work
+app.UseAuthentication();       // Required for custom login path to work
 app.UseAuthorization();
 
 app.MapControllerRoute(

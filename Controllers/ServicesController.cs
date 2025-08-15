@@ -21,7 +21,7 @@ namespace PetPhotographyApp.Controllers
         /// Returns a list of active services in the system.
         /// </summary>
         /// <example>
-        /// GET http://localhost:7198/api/Services/List 
+        /// GET http://localhost:5000/api/Services/List 
         /// -> [{"ServiceId":1,"Name":"Pet Portrait","Price":200.0},{"ServiceId":2,"Name":"Pet Birthday Shoot","Price":180.0}]
         /// </example>
         /// <returns>
@@ -50,7 +50,7 @@ namespace PetPhotographyApp.Controllers
         /// Returns a single service by ID.
         /// </summary>
         /// <example>
-        /// GET http://localhost:7198/api/Services/Find/2 
+        /// GET http://localhost:5000/api/Services/Find/2 
         /// -> {"ServiceId":2,"Name":"Pet Birthday Shoot","Price":180.0}
         /// </example>
         /// <returns>
@@ -75,7 +75,7 @@ namespace PetPhotographyApp.Controllers
         /// Adds a new service to the system.
         /// </summary>
         /// <example>
-        /// POST http://localhost:7198/api/Services/Add  
+        /// POST http://localhost:5000/api/Services/Add  
         /// Body: {"Name":"Holiday Special","Price":250.0}
         /// </example>
         /// <returns>
@@ -110,7 +110,7 @@ namespace PetPhotographyApp.Controllers
         /// Updates an existing service in the system.
         /// </summary>
         /// <example>
-        /// PUT http://localhost:7198/api/Services/Update/3  
+        /// PUT http://localhost:5000/api/Services/Update/3  
         /// Body: {"ServiceId":3,"Name":"Updated Service","Price":275.0}
         /// </example>
         /// <returns>
@@ -144,7 +144,7 @@ namespace PetPhotographyApp.Controllers
         /// Deletes a service by ID. Deactivates if it has active bookings.
         /// </summary>
         /// <example>
-        /// DELETE http://localhost:7198/api/Services/Delete/3
+        /// DELETE http://localhost:5000/api/Services/Delete/3
         /// </example>
         /// <returns>
         /// NoContent on success; NotFound if service does not exist.
@@ -179,7 +179,7 @@ namespace PetPhotographyApp.Controllers
         /// Lists bookings associated with a specific service.
         /// </summary>
         /// <example>
-        /// GET http://localhost:7198/api/Services/ListBookingsByService/2
+        /// GET http://localhost:5000/api/Services/ListBookingsByService/2
         /// </example>
         /// <param name="serviceId">ID of the service.</param>
         /// <returns>
@@ -235,7 +235,7 @@ namespace PetPhotographyApp.Controllers
         /// Returns a list of services within the specified price range.
         /// </summary>
         /// <example>
-        /// GET http://localhost:7198/api/Services/ByPriceRange?minPrice=100&amp;maxPrice=250
+        /// GET http://localhost:5000/api/Services/ByPriceRange?minPrice=100&amp;maxPrice=250
         /// </example>
         /// <param name="minPrice">Minimum price of the service.</param>
         /// <param name="maxPrice">Maximum price of the service.</param>

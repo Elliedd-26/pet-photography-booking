@@ -23,6 +23,8 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Displays a list of all notifications.
         /// </summary>
+        /// <returns>A view listing all notifications.</returns>
+        /// <example>GET: NotificationsPage/Index</example>
         public async Task<IActionResult> Index()
         {
             if (!IsLoggedIn()) return RedirectToAction("Login", "Login");
@@ -32,10 +34,13 @@ namespace PetPhotographyApp.Controllers
                 .ToListAsync();
             return View(notifications);
         }
-
+        
         /// <summary>
         /// Displays details of a specific notification.
         /// </summary>
+        /// <param name="id">The ID of the notification.</param>
+        /// <returns>A view showing notification details.</returns>
+        /// <example>GET: NotificationsPage/Details/5</example>
         public async Task<IActionResult> Details(int id)
         {
             if (!IsLoggedIn()) return RedirectToAction("Login", "Login");
@@ -51,6 +56,8 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Renders form to create a new notification (Admin only).
         /// </summary>
+        /// <returns>The create notification view.</returns>
+        /// <example>GET: NotificationsPage/Create</example>
         public IActionResult Create()
         {
             if (!IsAdmin()) return Unauthorized();
@@ -62,6 +69,9 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Handles creation of a new notification (Admin only).
         /// </summary>
+        /// <param name="notification">The notification object to create.</param>
+        /// <returns>Redirects to Index on success, or re-renders the view on failure.</returns>
+        /// <example>POST: NotificationsPage/Create</example>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("NotificationId,Title,Message,Type,IsRead,SentAt,RecipientOwnerId")] Notification notification)
@@ -82,6 +92,9 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Renders form to edit an existing notification (Admin only).
         /// </summary>
+        /// <param name="id">The ID of the notification.</param>
+        /// <returns>The edit view for the notification.</returns>
+        /// <example>GET: NotificationsPage/Edit/5</example>
         public async Task<IActionResult> Edit(int id)
         {
             if (!IsAdmin()) return Unauthorized();
@@ -96,6 +109,10 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Handles update of a notification (Admin only).
         /// </summary>
+        /// <param name="id">The ID of the notification.</param>
+        /// <param name="notification">The updated notification object.</param>
+        /// <returns>Redirects to Index on success, or re-renders the view on failure.</returns>
+        /// <example>POST: NotificationsPage/Edit/5</example>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("NotificationId,Title,Message,Type,IsRead,SentAt,RecipientOwnerId")] Notification notification)
@@ -126,6 +143,9 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Displays delete confirmation page (Admin only).
         /// </summary>
+        /// <param name="id">The ID of the notification to delete.</param>
+        /// <returns>A view confirming deletion.</returns>
+        /// <example>GET: NotificationsPage/Delete/5</example>
         public async Task<IActionResult> Delete(int id)
         {
             if (!IsAdmin()) return Unauthorized();
@@ -140,6 +160,9 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Handles deletion of a notification (Admin only).
         /// </summary>
+        /// <param name="id">The ID of the notification to delete.</param>
+        /// <returns>Redirects to Index after deletion.</returns>
+        /// <example>POST: NotificationsPage/DeleteConfirmed/5</example>
         [HttpPost, ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

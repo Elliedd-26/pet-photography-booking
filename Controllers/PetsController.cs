@@ -17,7 +17,13 @@ namespace PetPhotographyApp.Controllers
             _context = context;
         }
 
-        // GET: api/Pets
+        /// <summary>
+        /// Retrieves all pets with their owner's name.
+        /// </summary>
+        /// <returns>List of PetDTOs</returns>
+        /// <example>
+        /// GET: api/Pets
+        /// </example>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PetDTO>>> GetPets()
         {
@@ -36,7 +42,14 @@ namespace PetPhotographyApp.Controllers
             return Ok(petDtos);
         }
 
-        // GET: api/Pets/5
+        /// <summary>
+        /// Retrieves a specific pet by its ID.
+        /// </summary>
+        /// <param name="id">Pet ID</param>
+        /// <returns>PetDTO if found, 404 otherwise</returns>
+        /// <example>
+        /// GET: api/Pets/5
+        /// </example>
         [HttpGet("{id}")]
         public async Task<ActionResult<PetDTO>> GetPet(int id)
         {
@@ -59,7 +72,14 @@ namespace PetPhotographyApp.Controllers
             return Ok(petDto);
         }
 
-        // GET: api/Pets/ByOwner/3
+        /// <summary>
+        /// Retrieves pets belonging to a specific owner.
+        /// </summary>
+        /// <param name="ownerId">Owner ID</param>
+        /// <returns>List of Pet entities</returns>
+        /// <example>
+        /// GET: api/Pets/ByOwner/3
+        /// </example>
         [HttpGet("ByOwner/{ownerId}")]
         public async Task<ActionResult<IEnumerable<Pet>>> GetPetsByOwner(int ownerId)
         {
@@ -74,7 +94,14 @@ namespace PetPhotographyApp.Controllers
             return Ok(pets);
         }
 
-        // GET: api/Pets/BySpecies/Dog
+        /// <summary>
+        /// Retrieves pets by their species (e.g. Dog, Cat).
+        /// </summary>
+        /// <param name="species">Species name</param>
+        /// <returns>List of PetDTOs</returns>
+        /// <example>
+        /// GET: api/Pets/BySpecies/Dog
+        /// </example>
         [HttpGet("BySpecies/{species}")]
         public async Task<ActionResult<IEnumerable<PetDTO>>> GetPetsBySpecies(string species)
         {
@@ -99,7 +126,15 @@ namespace PetPhotographyApp.Controllers
             return Ok(petDtos);
         }
 
-        // PUT: api/Pets/5
+        /// <summary>
+        /// Updates a pet with the specified ID.
+        /// </summary>
+        /// <param name="id">Pet ID</param>
+        /// <param name="pet">Updated pet data</param>
+        /// <returns>NoContent on success, error response otherwise</returns>
+        /// <example>
+        /// PUT: api/Pets/5
+        /// </example>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutPet(int id, Pet pet)
         {
@@ -127,7 +162,22 @@ namespace PetPhotographyApp.Controllers
             return NoContent();
         }
 
-        // POST: api/Pets
+        /// <summary>
+        /// Creates a new pet.
+        /// </summary>
+        /// <param name="pet">Pet to add</param>
+        /// <returns>Newly created pet</returns>
+        /// <example>
+        /// POST: api/Pets
+        /// Body:
+        /// {
+        ///   "name": "Buddy",
+        ///   "species": "Dog",
+        ///   "breed": "Labrador",
+        ///   "age": 3,
+        ///   "ownerId": 1
+        /// }
+        /// </example>
         [HttpPost]
         public async Task<ActionResult<Pet>> PostPet(Pet pet)
         {
@@ -141,7 +191,14 @@ namespace PetPhotographyApp.Controllers
             return CreatedAtAction("GetPet", new { id = pet.PetId }, pet);
         }
 
-        // DELETE: api/Pets/5
+        /// <summary>
+        /// Deletes a pet by ID.
+        /// </summary>
+        /// <param name="id">Pet ID</param>
+        /// <returns>NoContent if deleted, NotFound otherwise</returns>
+        /// <example>
+        /// DELETE: api/Pets/5
+        /// </example>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletePet(int id)
         {
@@ -155,6 +212,11 @@ namespace PetPhotographyApp.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Checks if a pet exists by ID.
+        /// </summary>
+        /// <param name="id">Pet ID</param>
+        /// <returns>True if exists, false otherwise</returns>
         private bool PetExists(int id)
         {
             return _context.Pets.Any(e => e.PetId == id);

@@ -22,6 +22,8 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Displays all pet owners in the system.
         /// </summary>
+        /// <returns>A view listing all owners.</returns>
+        /// <example>GET: OwnersPage</example>
         [HttpGet("")]
         public async Task<IActionResult> Index()
         {
@@ -34,6 +36,9 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Shows detailed view for a specific owner including pets, bookings, and notifications.
         /// </summary>
+        /// <param name="id">The ID of the owner to display.</param>
+        /// <returns>A view displaying details of the owner.</returns>
+        /// <example>GET: OwnersPage/Details/5</example>
         [HttpGet("Details/{id}")]
         public async Task<IActionResult> Details(int? id)
         {
@@ -53,6 +58,8 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Renders form to create a new owner (Admin only).
         /// </summary>
+        /// <returns>The create owner view.</returns>
+        /// <example>GET: OwnersPage/Create</example>
         [HttpGet("Create")]
         public IActionResult Create()
         {
@@ -63,6 +70,9 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Handles creation of a new owner (Admin only).
         /// </summary>
+        /// <param name="owner">The Owner object to create.</param>
+        /// <returns>Redirects to Index on success, or redisplays the form on failure.</returns>
+        /// <example>POST: OwnersPage/Create</example>
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("OwnerId,Name,Email,PhoneNumber,Address")] Owner owner)
@@ -81,6 +91,9 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Renders form to edit an existing owner (Admin only).
         /// </summary>
+        /// <param name="id">The ID of the owner to edit.</param>
+        /// <returns>The edit owner view.</returns>
+        /// <example>GET: OwnersPage/Edit/5</example>
         [HttpGet("Edit/{id}")]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -96,6 +109,10 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Handles update of an owner (Admin only).
         /// </summary>
+        /// <param name="id">The ID of the owner being updated.</param>
+        /// <param name="owner">The updated Owner object.</param>
+        /// <returns>Redirects to Index on success, or redisplays the form on failure.</returns>
+        /// <example>POST: OwnersPage/Edit/5</example>
         [HttpPost("Edit/{id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("OwnerId,Name,Email,PhoneNumber,Address")] Owner owner)
@@ -123,6 +140,9 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Renders confirmation page for deleting an owner (Admin only).
         /// </summary>
+        /// <param name="id">The ID of the owner to delete.</param>
+        /// <returns>The delete confirmation view.</returns>
+        /// <example>GET: OwnersPage/Delete/5</example>
         [HttpGet("Delete/{id}")]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -138,6 +158,9 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Handles deletion of an owner from the system (Admin only).
         /// </summary>
+        /// <param name="id">The ID of the owner to delete.</param>
+        /// <returns>Redirects to Index after deletion.</returns>
+        /// <example>POST: OwnersPage/Delete/5</example>
         [HttpPost("Delete/{id}"), ActionName("DeleteConfirmed")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -156,6 +179,8 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Helper method to check if an owner exists.
         /// </summary>
+        /// <param name="id">The ID of the owner to check.</param>
+        /// <returns>True if owner exists, otherwise false.</returns>
         private bool OwnerExists(int id)
         {
             return _context.Owners.Any(e => e.OwnerId == id);
@@ -164,6 +189,7 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Returns true if user is logged in.
         /// </summary>
+        /// <returns>True if logged in; otherwise false.</returns>
         private bool IsLoggedIn()
         {
             return HttpContext.Session.GetString("UserRole") != null;
@@ -172,6 +198,7 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Returns true if user has Admin role.
         /// </summary>
+        /// <returns>True if user role is Admin; otherwise false.</returns>
         private bool IsAdmin()
         {
             return HttpContext.Session.GetString("UserRole") == "Admin";

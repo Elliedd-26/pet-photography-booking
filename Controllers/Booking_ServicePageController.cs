@@ -16,8 +16,16 @@ namespace PetPhotographyApp.Controllers
             _context = context;
         }
 
-        // GET: Booking_ServicePage
-        // Show all booking-service associations (only for logged-in users)
+        /// <summary>
+        /// Displays all booking-service associations.
+        /// Only accessible to logged-in users.
+        /// </summary>
+        /// <returns>
+        /// View with list of Booking_Service entities or redirects to login.
+        /// </returns>
+        /// <example>
+        /// GET: Booking_ServicePage
+        /// </example>
         public async Task<IActionResult> Index()
         {
             if (!IsLoggedIn()) return RedirectToAction("Login", "Login");
@@ -30,8 +38,16 @@ namespace PetPhotographyApp.Controllers
             return View(list);
         }
 
-        // GET: Booking_ServicePage/Create
-        // Render form to create a new booking-service link
+        /// <summary>
+        /// Renders the form to create a new booking-service link.
+        /// Only accessible to logged-in users.
+        /// </summary>
+        /// <returns>
+        /// View with dropdowns for Bookings and Services.
+        /// </returns>
+        /// <example>
+        /// GET: Booking_ServicePage/Create
+        /// </example>
         public IActionResult Create()
         {
             if (!IsLoggedIn()) return RedirectToAction("Login", "Login");
@@ -53,8 +69,17 @@ namespace PetPhotographyApp.Controllers
             return View(viewModel);
         }
 
-        // POST: Booking_ServicePage/Create
-        // Handle form submission to create booking-service link
+        /// <summary>
+        /// Handles submission of new booking-service link.
+        /// Only accessible to logged-in users.
+        /// </summary>
+        /// <param name="viewModel">BookingServiceViewModel containing selected BookingId and ServiceId</param>
+        /// <returns>
+        /// Redirects to Index on success, or redisplays form with validation errors.
+        /// </returns>
+        /// <example>
+        /// POST: Booking_ServicePage/Create
+        /// </example>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(BookingServiceViewModel viewModel)
@@ -89,8 +114,18 @@ namespace PetPhotographyApp.Controllers
             return View(viewModel);
         }
 
-        // GET: Booking_ServicePage/Delete
-        // Only Admin can delete booking-service link
+        /// <summary>
+        /// Displays confirmation page to delete a booking-service link.
+        /// Only accessible to Admin users.
+        /// </summary>
+        /// <param name="bookingId">ID of the booking</param>
+        /// <param name="serviceId">ID of the service</param>
+        /// <returns>
+        /// View to confirm deletion or appropriate error/redirect.
+        /// </returns>
+        /// <example>
+        /// GET: Booking_ServicePage/Delete?bookingId=1&serviceId=2
+        /// </example>
         public async Task<IActionResult> Delete(int? bookingId, int? serviceId)
         {
             if (!IsAdmin()) return Unauthorized();
@@ -108,8 +143,18 @@ namespace PetPhotographyApp.Controllers
             return View(entity);
         }
 
-        // POST: Booking_ServicePage/DeleteConfirmed
-        // Execute deletion (only for Admin)
+        /// <summary>
+        /// Confirms and executes deletion of a booking-service link.
+        /// Only accessible to Admin users.
+        /// </summary>
+        /// <param name="bookingId">ID of the booking</param>
+        /// <param name="serviceId">ID of the service</param>
+        /// <returns>
+        /// Redirects to Index after deletion or returns Unauthorized.
+        /// </returns>
+        /// <example>
+        /// POST: Booking_ServicePage/DeleteConfirmed
+        /// </example>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int bookingId, int serviceId)

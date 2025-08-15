@@ -21,6 +21,10 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Displays all available services.
         /// </summary>
+        /// <returns>View containing a list of services.</returns>
+        /// <example>
+        /// GET: /ServicesPage/Index
+        /// </example>
         public async Task<IActionResult> Index()
         {
             if (!IsLoggedIn()) return RedirectToAction("Login", "Login");
@@ -32,6 +36,11 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Shows details for a specific service.
         /// </summary>
+        /// <param name="id">The ID of the service to view.</param>
+        /// <returns>View showing service details.</returns>
+        /// <example>
+        /// GET: /ServicesPage/Details/3
+        /// </example>
         public async Task<IActionResult> Details(int? id)
         {
             if (!IsLoggedIn()) return RedirectToAction("Login", "Account");
@@ -53,6 +62,10 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Renders the service creation form (Admin only).
         /// </summary>
+        /// <returns>View for creating a new service.</returns>
+        /// <example>
+        /// GET: /ServicesPage/Create
+        /// </example>
         public IActionResult Create()
         {
             if (!IsAdmin()) return Unauthorized();
@@ -62,6 +75,11 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Handles service creation (Admin only).
         /// </summary>
+        /// <param name="serviceDto">The service data to be created.</param>
+        /// <returns>Redirects to Index on success or reloads the form on failure.</returns>
+        /// <example>
+        /// POST: /ServicesPage/Create
+        /// </example>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,Price")] ServiceDTO serviceDto)
@@ -85,6 +103,11 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Renders the service edit form (Admin only).
         /// </summary>
+        /// <param name="id">The ID of the service to edit.</param>
+        /// <returns>View for editing the service.</returns>
+        /// <example>
+        /// GET: /ServicesPage/Edit/5
+        /// </example>
         public async Task<IActionResult> Edit(int? id)
         {
             if (!IsAdmin()) return Unauthorized();
@@ -106,6 +129,12 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Handles service update (Admin only).
         /// </summary>
+        /// <param name="id">The ID of the service being updated.</param>
+        /// <param name="serviceDto">The updated service data.</param>
+        /// <returns>Redirects to Index on success or reloads the form on failure.</returns>
+        /// <example>
+        /// POST: /ServicesPage/Edit/5
+        /// </example>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ServiceId,Name,Price")] ServiceDTO serviceDto)
@@ -141,6 +170,11 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Renders delete confirmation view (Admin only).
         /// </summary>
+        /// <param name="id">The ID of the service to delete.</param>
+        /// <returns>View showing delete confirmation.</returns>
+        /// <example>
+        /// GET: /ServicesPage/Delete/5
+        /// </example>
         public async Task<IActionResult> Delete(int? id)
         {
             if (!IsAdmin()) return Unauthorized();
@@ -162,6 +196,11 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Executes service deletion after confirmation (Admin only).
         /// </summary>
+        /// <param name="id">The ID of the service to delete.</param>
+        /// <returns>Redirects to Index on success.</returns>
+        /// <example>
+        /// POST: /ServicesPage/Delete/5
+        /// </example>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -180,6 +219,7 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Checks if a user is logged in.
         /// </summary>
+        /// <returns>True if user is logged in; otherwise, false.</returns>
         private bool IsLoggedIn()
         {
             return HttpContext.Session.GetString("UserRole") != null;
@@ -188,6 +228,7 @@ namespace PetPhotographyApp.Controllers
         /// <summary>
         /// Checks if the logged-in user is an admin.
         /// </summary>
+        /// <returns>True if user is an admin; otherwise, false.</returns>
         private bool IsAdmin()
         {
             return HttpContext.Session.GetString("UserRole") == "Admin";

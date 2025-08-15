@@ -17,7 +17,11 @@ namespace PetPhotographyApp.Controllers
             _context = context;
         }
 
-        // GET: api/owners
+        /// <summary>
+        /// Retrieves all owners including their pets.
+        /// </summary>
+        /// <returns>A list of owners with their pets.</returns>
+        /// <example>GET: api/owners</example>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Owner>>> GetOwners()
         {
@@ -26,7 +30,12 @@ namespace PetPhotographyApp.Controllers
                 .ToListAsync();
         }
 
-        // GET: api/owners/5
+        /// <summary>
+        /// Retrieves a specific owner by ID including their pets.
+        /// </summary>
+        /// <param name="id">The ID of the owner to retrieve.</param>
+        /// <returns>The owner object with pets if found; 404 otherwise.</returns>
+        /// <example>GET: api/owners/5</example>
         [HttpGet("{id}")]
         public async Task<ActionResult<Owner>> GetOwner(int id)
         {
@@ -40,7 +49,12 @@ namespace PetPhotographyApp.Controllers
             return owner;
         }
 
-        // POST: api/owners
+        /// <summary>
+        /// Creates a new owner.
+        /// </summary>
+        /// <param name="owner">The owner object to create.</param>
+        /// <returns>Created owner object along with a 201 status and location header.</returns>
+        /// <example>POST: api/owners</example>
         [HttpPost]
         public async Task<ActionResult<Owner>> CreateOwner(Owner owner)
         {
@@ -53,7 +67,13 @@ namespace PetPhotographyApp.Controllers
             return CreatedAtAction(nameof(GetOwner), new { id = owner.OwnerId }, owner);
         }
 
-        // PUT: api/owners/5
+        /// <summary>
+        /// Updates an existing owner.
+        /// </summary>
+        /// <param name="id">The ID of the owner to update.</param>
+        /// <param name="owner">The updated owner object.</param>
+        /// <returns>No content on success; 400 if IDs mismatch or model invalid; 404 if owner not found.</returns>
+        /// <example>PUT: api/owners/5</example>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateOwner(int id, Owner owner)
         {
@@ -80,7 +100,12 @@ namespace PetPhotographyApp.Controllers
             return NoContent();
         }
 
-        // DELETE: api/owners/5
+        /// <summary>
+        /// Deletes an owner by ID.
+        /// </summary>
+        /// <param name="id">The ID of the owner to delete.</param>
+        /// <returns>No content on success; 404 if owner not found.</returns>
+        /// <example>DELETE: api/owners/5</example>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOwner(int id)
         {
@@ -94,6 +119,11 @@ namespace PetPhotographyApp.Controllers
             return NoContent();
         }
 
+        // <summary>
+        /// Checks if an owner exists by ID.
+        /// </summary>
+        /// <param name="id">The owner ID to check.</param>
+        /// <returns>True if owner exists, otherwise false.</returns>
         private bool OwnerExists(int id)
         {
             return _context.Owners.Any(e => e.OwnerId == id);
