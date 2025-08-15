@@ -98,5 +98,5 @@ Final Documentation: August 15, 2025
 ## Web Page View
 
 ## Contact
-GitHub: Elliedd-26\Alyssaak09
-Repository: pet-photography-booking
+- GitHub: Elliedd-26\Alyssaak09
+- Repository: pet-photography-booking
