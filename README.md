@@ -104,7 +104,6 @@ Final Documentation: August 15, 2025
 
 ![Pet Lens](images/admin-pet-details-with-image-uploaded.png)
 
-![Pet Lens](images/client-booking-session-page.png)
 
 ## Contact
 - GitHub: Elliedd-26\Alyssaak09
