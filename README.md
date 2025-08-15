@@ -8,12 +8,14 @@
 A pet photography booking management system that allows pet owners to book professional photographers for their pets.
 
 ## Features
+- Application User, Authorize Attributes (Admin Login and Client Login)
 - Pet owner management
 - Pet information management
 - Photographer management
 - Booking system
 - Service type management
 - Notification system
+- Image Uploading
 
 ## Tech Stack
 - ASP.NET Core MVC
