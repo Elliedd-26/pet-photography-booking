@@ -102,8 +102,6 @@ Final Documentation: August 15, 2025
 
 ![Pet Lens](images/admin-booking-page.png)
 
-![Pet Lens](images/images/admin-pets-page.png)
-
 ![Pet Lens](images/admin-pet-details-with-image-uploaded.png)
 
 ![Pet Lens](images/client-booking-session-page.png)
