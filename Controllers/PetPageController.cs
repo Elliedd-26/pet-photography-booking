@@ -17,8 +17,11 @@ namespace PetPhotographyApp.Controllers
             _environment = environment;
         }
 
-        // GET: PetPage/Index
-        // Visible to all logged-in users
+        /// <summary>
+        /// Displays a list of all pets with their owners.
+        /// </summary>
+        /// <returns>View with list of pets.</returns>
+        /// <example>GET: PetPage/Index</example>
         public async Task<IActionResult> Index()
         {
             if (!IsLoggedIn()) return RedirectToAction("Login", "Login");
@@ -27,8 +30,12 @@ namespace PetPhotographyApp.Controllers
             return View(pets);
         }
 
-        // GET: PetPage/Details/5
-        // Visible to all logged-in users
+        /// <summary>
+        /// Shows details for a specific pet.
+        /// </summary>
+        /// <param name="id">The ID of the pet.</param>
+        /// <returns>View with pet details or NotFound if pet doesn't exist.</returns>
+        /// <example>GET: PetPage/Details/5</example>
         public async Task<IActionResult> Details(int? id)
         {
             if (!IsLoggedIn()) return RedirectToAction("Login", "Login");
@@ -41,8 +48,11 @@ namespace PetPhotographyApp.Controllers
             return View(pet);
         }
 
-        // GET: PetPage/Create
-        // Allow all logged-in users to access creation form
+        /// <summary>
+        /// Displays form for creating a new pet.
+        /// </summary>
+        /// <returns>View with creation form.</returns>
+        /// <example>GET: PetPage/Create</example>
         public IActionResult Create()
         {
             if (!IsLoggedIn()) return RedirectToAction("Login", "Login");
@@ -51,8 +61,13 @@ namespace PetPhotographyApp.Controllers
             return View();
         }
 
-        // POST: PetPage/Create
-        // Allow all logged-in users to submit pet creation
+        /// <summary>
+        /// Processes new pet creation.
+        /// </summary>
+        /// <param name="pet">The pet model data.</param>
+        /// <param name="photo">Optional uploaded photo.</param>
+        /// <returns>Redirects to index on success or reloads form on failure.</returns>
+        /// <example>POST: PetPage/Create</example>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Pet pet, IFormFile? photo)
@@ -81,8 +96,12 @@ namespace PetPhotographyApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: PetPage/Edit/5
-        // Only Admins can access pet edit form
+        /// <summary>
+        /// Displays form to edit an existing pet.
+        /// </summary>
+        /// <param name="id">The ID of the pet to edit.</param>
+        /// <returns>View with edit form or NotFound/Unauthorized if not accessible.</returns>
+        /// <example>GET: PetPage/Edit/5</example>
         public async Task<IActionResult> Edit(int? id)
         {
             if (!IsLoggedIn()) return RedirectToAction("Login", "Login");
@@ -97,8 +116,14 @@ namespace PetPhotographyApp.Controllers
             return View(pet);
         }
 
-        // POST: PetPage/Edit/5
-        // Only Admins can update pet info
+        /// <summary>
+        /// Processes updates to an existing pet.
+        /// </summary>
+        /// <param name="id">The ID of the pet being updated.</param>
+        /// <param name="pet">Updated pet data.</param>
+        /// <param name="photo">Optional new photo file.</param>
+        /// <returns>Redirects to index on success, or NotFound/Unauthorized on failure.</returns>
+        /// <example>POST: PetPage/Edit/5</example>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Pet pet, IFormFile? photo)
@@ -141,8 +166,12 @@ namespace PetPhotographyApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: PetPage/Delete/5
-        // Only Admins can view delete confirmation
+        /// <summary>
+        /// Shows confirmation page for deleting a pet.
+        /// </summary>
+        /// <param name="id">The ID of the pet to delete.</param>
+        /// <returns>View with pet details or NotFound/Unauthorized if not accessible.</returns>
+        /// <example>GET: PetPage/Delete/5</example>
         public async Task<IActionResult> Delete(int? id)
         {
             if (!IsLoggedIn()) return RedirectToAction("Login", "Login");
@@ -156,8 +185,12 @@ namespace PetPhotographyApp.Controllers
             return View(pet);
         }
 
-        // POST: PetPage/Delete/5
-        // Only Admins can delete a pet
+        /// <summary>
+        /// Deletes the specified pet.
+        /// </summary>
+        /// <param name="id">The ID of the pet to delete.</param>
+        /// <returns>Redirects to index after deletion or NotFound/Unauthorized if not accessible.</returns>
+        /// <example>POST: PetPage/Delete/5</example>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -175,13 +208,19 @@ namespace PetPhotographyApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // Helper method to check if current user is logged in
+        /// <summary>
+        /// Checks if the user is logged in.
+        /// </summary>
+        /// <returns>True if logged in; otherwise false.</returns>
         private bool IsLoggedIn()
         {
             return !string.IsNullOrEmpty(HttpContext.Session.GetString("UserRole"));
         }
 
-        // Helper method to check if current user is an Admin
+        /// <summary>
+        /// Checks if the user has Admin role.
+        /// </summary>
+        /// <returns>True if user is Admin; otherwise false.</returns>
         private bool IsAdmin()
         {
             return HttpContext.Session.GetString("UserRole") == "Admin";

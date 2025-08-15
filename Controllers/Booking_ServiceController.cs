@@ -17,8 +17,15 @@ namespace PetPhotographyApp.Controllers
             _context = context;
         }
 
-        // GET: api/Booking_Service
-        // Returns a list of all booking-service relationships.
+        /// <summary>
+        /// Retrieves a list of all booking-service relationships.
+        /// </summary>
+        /// <returns>
+        /// 200 OK with a list of BookingServiceDTO
+        /// </returns>
+        /// <example>
+        /// GET: api/Booking_Service
+        /// </example>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BookingServiceDTO>>> GetAll()
         {
@@ -32,8 +39,19 @@ namespace PetPhotographyApp.Controllers
             return Ok(result);
         }
         
-        // GET: api/Booking_Service/{bookingId}/{serviceId}
-        // Retrieves a specific booking-service relationship by composite key.
+        /// <summary>
+        /// Retrieves a specific booking-service relationship by booking ID and service ID.
+        /// </summary>
+        /// <param name="bookingId">The ID of the booking</param>
+        /// <param name="serviceId">The ID of the service</param>
+        /// <returns>
+        /// 200 OK with BookingServiceDTO<br/>
+        /// or<br/>
+        /// 404 Not Found if the relationship does not exist
+        /// </returns>
+        /// <example>
+        /// GET: api/Booking_Service/1/2
+        /// </example>
         [HttpGet("{bookingId}/{serviceId}")]
         public async Task<ActionResult<BookingServiceDTO>> Get(int bookingId, int serviceId)
         {
@@ -47,8 +65,19 @@ namespace PetPhotographyApp.Controllers
             };
         }
 
-        // POST: api/Booking_Service
-        // Creates a new booking-service relationship.
+        /// <summary>
+        /// Creates a new booking-service relationship.
+        /// </summary>
+        /// <param name="dto">The BookingServiceDTO containing BookingId and ServiceId</param>
+        /// <returns>
+        /// 201 Created with a reference to the new resource<br/>
+        /// or<br/>
+        /// 400 Bad Request if input is invalid
+        /// </returns>
+        /// <example>
+        /// POST: api/Booking_Service
+        /// Request Body: { "bookingId": 1, "serviceId": 2 }
+        /// </example>
         [HttpPost]
         public async Task<ActionResult> Create(BookingServiceDTO dto)
         {
@@ -64,8 +93,19 @@ namespace PetPhotographyApp.Controllers
             return CreatedAtAction(nameof(Get), new { bookingId = dto.BookingId, serviceId = dto.ServiceId }, dto);
         }
 
-        // DELETE: api/Booking_Service/{bookingId}/{serviceId}
-        // Deletes an existing booking-service relationship.
+        /// <summary>
+        /// Deletes an existing booking-service relationship by booking ID and service ID.
+        /// </summary>
+        /// <param name="bookingId">The ID of the booking</param>
+        /// <param name="serviceId">The ID of the service</param>
+        /// <returns>
+        /// 204 No Content if deletion is successful<br/>
+        /// or<br/>
+        /// 404 Not Found if the relationship does not exist
+        /// </returns>
+        /// <example>
+        /// DELETE: api/Booking_Service/1/2
+        /// </example>
         [HttpDelete("{bookingId}/{serviceId}")]
         public async Task<IActionResult> Delete(int bookingId, int serviceId)
         {

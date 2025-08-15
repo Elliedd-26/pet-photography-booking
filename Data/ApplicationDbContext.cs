@@ -108,7 +108,7 @@ namespace PetPhotographyApp.Data
             });
         
 
-            // ✅ SEED DATA
+            // SEED DATA
 /*
             modelBuilder.Entity<Owner>().HasData(
                 new Owner { OwnerId = 1, Name = "Alice", Email = "alice@example.com", PhoneNumber = "1234567890" },

@@ -21,7 +21,7 @@ namespace PetPhotographyApp.Controllers
         /// Returns a list of pet photography bookings in the system.
         /// </summary>
         /// <example>
-        /// GET http://localhost:7198/api/Bookings/List -> [{"BookingId":1,"OwnerName":"Lisa","PetName":"Fluffy","PhotographerName":"Jim","Services":[{"ServiceId":1,"Name":"Pet Portrait"}]}, ...]
+        /// GET http://localhost:5000/api/Bookings/List -> [{"BookingId":1,"OwnerName":"Lisa","PetName":"Fluffy","PhotographerName":"Jim","Services":[{"ServiceId":1,"Name":"Pet Portrait"}]}, ...]
         /// </example>
         /// <returns>
         /// A list of BookingSummaryDTO objects with related owner, pet, photographer, and service information.
@@ -55,7 +55,7 @@ namespace PetPhotographyApp.Controllers
         /// Returns a pet photography booking specified by ID.
         /// </summary>
         /// <example>
-        /// GET http://localhost:7198/api/Bookings/Find/5 -> {"BookingId":5,"OwnerName":"Lisa","PetName":"Fluffy","PhotographerName":"Jim","Services":[{"ServiceId":1,"Name":"Pet Portrait"}]}
+        /// GET http://localhost:5000/api/Bookings/Find/5 -> {"BookingId":5,"OwnerName":"Lisa","PetName":"Fluffy","PhotographerName":"Jim","Services":[{"ServiceId":1,"Name":"Pet Portrait"}]}
         /// </example>
         /// <returns>
         /// A single BookingDTO object if found; otherwise, NotFound.
@@ -100,7 +100,7 @@ namespace PetPhotographyApp.Controllers
         /// Updates an existing pet photography booking in the system.
         /// </summary>
         /// <example>
-        /// PUT http://localhost:7198/api/Bookings/Update/5
+        /// PUT http://localhost:5000/api/Bookings/Update/5
         /// </example>
         /// <returns>
         /// Returns NoContent on success, BadRequest if IDs mismatch, or NotFound if booking or related entities do not exist.
@@ -162,7 +162,7 @@ namespace PetPhotographyApp.Controllers
         /// Adds a new pet photography booking to the system.
         /// </summary>
         /// <example>
-        /// POST http://localhost:7198/api/Bookings/Add
+        /// POST http://localhost:5000/api/Bookings/Add
         /// </example>
         /// <returns>
         /// Returns Created with the new booking if successful, or NotFound if related entities do not exist.
@@ -209,7 +209,7 @@ namespace PetPhotographyApp.Controllers
         /// Returns all bookings for a given photographer.
         /// </summary>
         /// <example>
-        /// GET http://localhost:7198/api/Bookings/BookingsForPhotographer/7
+        /// GET http://localhost:5000/api/Bookings/BookingsForPhotographer/7
         /// </example>
         /// <param name="photographerId">The ID of the photographer.</param>
         /// <returns>
@@ -306,7 +306,7 @@ namespace PetPhotographyApp.Controllers
         /// Deletes a pet photography booking from the system.
         /// </summary>
         /// <example>
-        /// DELETE http://localhost:7198/api/Bookings/Delete/5
+        /// DELETE http://localhost:5000/api/Bookings/Delete/5
         /// </example>
         /// <returns>
         /// Returns NoContent on success or NotFound if booking does not exist.
