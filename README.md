@@ -100,6 +100,13 @@ Final Documentation: August 15, 2025
 ## Web Page View
 ![Pet Lens](images/welcome-page.png)
 
+![Pet Lens](images/admin-booking-page.png)
+
+![Pet Lens](images/images/admin-pets-page.png)
+
+![Pet Lens](images/admin-pet-details-with-image-uploaded.png)
+
+![Pet Lens](images/client-booking-session-page.png)
 
 ## Contact
 - GitHub: Elliedd-26\Alyssaak09
