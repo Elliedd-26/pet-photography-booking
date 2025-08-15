@@ -96,6 +96,8 @@ Creative Collaboration: August 1, 2025
 Final Documentation: August 15, 2025
 
 ## Web Page View
+![Pet Lens](images/Welcome Page.png)
+
 
 ## Contact
 - GitHub: Elliedd-26\Alyssaak09
